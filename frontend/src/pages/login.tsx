@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useContext } from "react";
 
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -34,6 +34,9 @@ const Login = () => {
         <button type="submit">Se connecter</button>
       </form>
       <button onClick={handleGoBack}>Retour</button>
+      <p>
+        <Link to="/forgot-password"> Mot de passe oublié ?</Link>
+      </p>
     </div>
   );
 };

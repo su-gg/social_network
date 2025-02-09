@@ -11,6 +11,9 @@ dotenv.config();
 const app = express();
 const server = createServer(app);
 
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(express.json());
+
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000", 
@@ -31,15 +34,13 @@ io.on("connection", (socket) => {
   });
 });
 
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
-app.use(express.json());
+app.use("/api/auth", authRoutes);
 
 const MONGO_URI = process.env.MONGO_URI;
 if (!MONGO_URI) {
   console.error("❌ Erreur: MONGO_URI n'est pas défini dans le fichier .env");
   process.exit(1); 
 }
-
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB connecté avec succès"))
@@ -47,9 +48,6 @@ mongoose
     console.error("❌ Erreur de connexion à MongoDB :", err);
     process.exit(1); 
   });
-
-
-app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 3010;
 server.listen(PORT, () => console.log(`🚀 Serveur (HTTP + WebSocket) lancé sur le port ${PORT}`));

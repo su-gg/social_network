@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
+    "@types/http-proxy-middleware": "^0.19.3",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3"
   }

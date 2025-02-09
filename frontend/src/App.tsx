@@ -10,7 +10,7 @@ import Chat from "./pages/chat";
 
 import Navbar from "./components/navbar";
 import PrivateRoute from "./components/PrivateRoute";
-import ForgotPassword from "./pages/forgortpassword";
+import ForgotPassword from "./pages/forgot-password";
 
 const App: React.FC = () => {
   return (

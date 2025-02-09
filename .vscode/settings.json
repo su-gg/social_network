@@ -3,5 +3,8 @@
     "editorRuler.foreground": "#334081",
     "editorIndentGuide.activeBackground1": "#df1717",
     "editorWhitespace.foreground": "#e4f84e"
-  }
+  },
+  "cSpell.words": [
+    "forgortpassword"
+  ]
 }
