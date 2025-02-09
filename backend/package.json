@@ -1,0 +1,28 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "server.ts",
+  "scripts": {
+    "start:frontend": "cd ../frontend && npm start",
+    "start:backend": "node -r ts-node/register ../backend/server.ts",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^9.1.2",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.8"
+  }
+}
