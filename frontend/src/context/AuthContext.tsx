@@ -26,6 +26,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
 
+  const logout = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/home");
+  };
+  
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -47,7 +53,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
+      console.log("Tentative de connexion avec :", { email });
       const { data } = await axios.post(`${API_URL}/login`, { email, password }, { withCredentials: true });
+
       localStorage.setItem("token", data.token);
       setUser(data.user);
       navigate("/profile");
@@ -59,7 +67,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   
   const register = async (name: string, username: string, email: string, password: string) => {
     try {
-      await axios.post(`${API_URL}/register`, { name, username, email, password });
+      console.log("Tentative d'inscription avec :", { name});
+  await axios.post(`${API_URL}/register`, { name, username, email, password });
+
     navigate("/login");
     } catch (error) {
       alert("Erreur d'inscription. Veuillez essayer à nouveau.")
@@ -67,11 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
   };
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    setUser(null);
-    navigate("/home");
-  };
+
 
   return (
     <AuthContext.Provider value={{ user, login, register, logout }}>

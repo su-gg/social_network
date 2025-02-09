@@ -5,13 +5,26 @@ import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes";
 
 dotenv.config();
-const app = express();
-app.use(express.json());
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
-mongoose.connect(process.env.MONGO_URI as string)
-  .then(() => console.log("MongoDB connecté"))
-  .catch((err) => console.log(err));
+const app = express();
+
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(express.json());
+
+const MONGO_URI = process.env.MONGO_URI;
+if (!MONGO_URI) {
+  console.error("❌ Erreur: MONGO_URI n'est pas défini dans le fichier .env");
+  process.exit(1); 
+}
+
+mongoose
+  .connect(MONGO_URI)
+  .then(() => console.log("✅ MongoDB connecté avec succès"))
+  .catch((err) => {
+    console.error("❌ Erreur de connexion à MongoDB :", err);
+    process.exit(1); 
+  });
+
 
 app.use("/api/auth", authRoutes);
 
