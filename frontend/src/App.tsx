@@ -1,28 +1,37 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import Home from "./pages/home";
 import Login from "./pages/login";
 import Register from "./pages/register";
 import Profile from "./pages/profile";
+import Chat from "./pages/chat";
 
+import Navbar from "./components/navbar";
 import PrivateRoute from "./components/PrivateRoute";
 
 const App: React.FC = () => {
   return (
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-       
-        <Route
+    <>
+    <Navbar />
+      <div className="container mt-4">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
         path="/profile"
         element={<PrivateRoute element={<Profile />} />}
       />
+        <Route path="/chat" element={<Chat />} />
     
         </Routes>
+        </div>
+        </>
   );
 };
 
 export default App;
+

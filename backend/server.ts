@@ -2,11 +2,34 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import { createServer } from "http";
+import { Server } from "socket.io";
 import authRoutes from "./routes/authRoutes";
 
 dotenv.config();
 
 const app = express();
+const server = createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000", 
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("✅ Un utilisateur s'est connecté via WebSocket");
+
+  socket.on("message", (data) => {
+    console.log("📩 Message reçu :", data);
+    io.emit("message", data); 
+  });
+
+  socket.on("disconnect", () => {
+    console.log("❌ Un utilisateur s'est déconnecté");
+  });
+});
 
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(express.json());
@@ -29,4 +52,4 @@ mongoose
 app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 3010;
-app.listen(PORT, () => console.log(`🚀 Serveur lancé sur le port ${PORT}`));
+server.listen(PORT, () => console.log(`🚀 Serveur (HTTP + WebSocket) lancé sur le port ${PORT}`));
