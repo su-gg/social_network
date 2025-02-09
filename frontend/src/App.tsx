@@ -10,6 +10,7 @@ import Chat from "./pages/chat";
 
 import Navbar from "./components/navbar";
 import PrivateRoute from "./components/PrivateRoute";
+import ForgotPassword from "./pages/forgortpassword";
 
 const App: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const App: React.FC = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route
         path="/profile"
         element={<PrivateRoute element={<Profile />} />}
