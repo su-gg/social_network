@@ -64,24 +64,24 @@ const Profile: React.FC = () => {
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1>Mon espace</h1>
+      <h1>My world - to change</h1>
   
       <nav style={{ marginBottom: "20px" }}>
-        <button onClick={() => setActiveTab("profil")}>Profil</button>
+        <button onClick={() => setActiveTab("profil")}>Profile</button>
         <button onClick={() => setActiveTab("admin")}>Admin</button>
-        <button onClick={() => setActiveTab("chat")}>Espace Chat</button>
-        <button onClick={() => setActiveTab("messagerie")}>Messagerie</button>
+        <button onClick={() => setActiveTab("chat")}>Chat</button>
+        <button onClick={() => setActiveTab("messagerie")}>Messages</button>
       </nav>
 
       {activeTab === "profil" && (
         <div>
-          <h2>Bienvenue, 👋</h2>
-          <p>Ici, vous pouvez poster des messages et des photos qui seront visibles sur votre profil.</p>
+          <h2>Welcome, 👋</h2>
+          <p>Post images or messages which will be visible on your profile.</p>
           <form onSubmit={handlePostSubmit} style={{ marginBottom: "20px" }}>
             <textarea
               value={postMessage}
               onChange={(e) => setPostMessage(e.target.value)}
-              placeholder="Votre message..."
+              placeholder="Tap your message..."
               rows={4}
               cols={50}
             />
@@ -92,11 +92,11 @@ const Profile: React.FC = () => {
               placeholder="URL de la photo (optionnel)"
               style={{ display: "block", marginBottom: "10px", width: "300px" }}
             />
-            <button type="submit">Poster</button>
+            <button type="submit">Post</button>
           </form>
-          <h3>Publications</h3>
+          <h3>Posts</h3>
           {posts.length === 0 ? (
-            <p>Aucune publication.</p>
+            <p>No post.</p>
           ) : (
             <ul>
               {posts.map((post) => (

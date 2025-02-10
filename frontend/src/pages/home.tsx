@@ -4,7 +4,7 @@ const Home: React.FC = () => {
 
   
   return (
-    <div><h1>Bienvenue sur le réseau social</h1></div>
+    <div><h1>Welcome to Beyond Words</h1></div>
   )
 };
 

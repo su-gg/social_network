@@ -26,16 +26,16 @@ const Login = () => {
 
   return (
     <div>
-      <h2>Connexion</h2>
+      <h2>Login</h2>
       
       <form onSubmit={handleLogin}>
         <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Mot de passe" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Se connecter</button>
+        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <button type="submit">Login</button>
       </form>
-      <button onClick={handleGoBack}>Retour</button>
+      <button onClick={handleGoBack}>Return</button>
       <p>
-        <Link to="/forgot-password"> Mot de passe oublié ?</Link>
+        <Link to="/forgot-password"> Password ?</Link>
       </p>
     </div>
   );
