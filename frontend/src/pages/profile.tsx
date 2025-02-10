@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Post {
   id: number;
@@ -7,39 +7,54 @@ interface Post {
 }
 
 const Profile: React.FC = () => {
-  // État pour la navigation entre les onglets
   const [activeTab, setActiveTab] = useState<string>("profil");
 
-  // États pour le profil (publication de messages et photos)
   const [posts, setPosts] = useState<Post[]>([]);
   const [postMessage, setPostMessage] = useState<string>("");
   const [postPhoto, setPostPhoto] = useState<string>("");
 
-  // État pour l'onglet Admin (visibilité du profil)
   const [isProfilePublic, setIsProfilePublic] = useState<boolean>(true);
 
-  // État pour l'onglet Messagerie
   const [newMessage, setNewMessage] = useState<string>("");
   const [messages, setMessages] = useState<string[]>([]);
 
-  // Données simulées pour l'Espace Chat (amis connectés)
   const friends = ["Alice", "Bob", "Charlie", "David"];
 
-  // Gestion de la publication dans l'onglet Profil
+  useEffect(() => {
+    const savedPosts = localStorage.getItem("posts");
+    if (savedPosts) {
+      try {
+        const parsedPosts = JSON.parse(savedPosts);
+        if (Array.isArray(parsedPosts)) {
+          setPosts(parsedPosts);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération des posts :", error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("posts", JSON.stringify(posts));
+  }, [posts]);
+  
   const handlePostSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (postMessage.trim() === "" && postPhoto.trim() === "") return;
+    
     const newPost: Post = {
       id: Date.now(),
       message: postMessage,
-      photoUrl: postPhoto ? postPhoto : undefined,
+      photoUrl: postPhoto || undefined,
     };
-    setPosts([newPost, ...posts]);
+    const updatedPosts = [newPost, ...posts];
+    setPosts(updatedPosts);
+    localStorage.setItem("posts", JSON.stringify(updatedPosts)); 
+
     setPostMessage("");
     setPostPhoto("");
   };
 
-  // Gestion de l'envoi d'un message dans l'onglet Messagerie
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (newMessage.trim() === "") return;
@@ -50,7 +65,7 @@ const Profile: React.FC = () => {
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
       <h1>Mon espace</h1>
-      {/* Barre de navigation pour les onglets */}
+  
       <nav style={{ marginBottom: "20px" }}>
         <button onClick={() => setActiveTab("profil")}>Profil</button>
         <button onClick={() => setActiveTab("admin")}>Admin</button>
@@ -58,10 +73,9 @@ const Profile: React.FC = () => {
         <button onClick={() => setActiveTab("messagerie")}>Messagerie</button>
       </nav>
 
-      {/* Contenu en fonction de l'onglet actif */}
       {activeTab === "profil" && (
         <div>
-          <h2>Votre Profil</h2>
+          <h2>Bienvenue, 👋</h2>
           <p>Ici, vous pouvez poster des messages et des photos qui seront visibles sur votre profil.</p>
           <form onSubmit={handlePostSubmit} style={{ marginBottom: "20px" }}>
             <textarea
@@ -70,7 +84,6 @@ const Profile: React.FC = () => {
               placeholder="Votre message..."
               rows={4}
               cols={50}
-              style={{ display: "block", marginBottom: "10px" }}
             />
             <input
               type="text"

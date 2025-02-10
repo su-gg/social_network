@@ -18,12 +18,27 @@ interface IUser {
   password: string;
 }
 
-const generateTokens = (userId: string) => {
-  const accessToken = jwt.sign({ id: userId }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
-  const refreshToken = jwt.sign({ id: userId }, JWT_SECRET, { expiresIn: JWT_REFRESH_EXPIRES_IN });
+const generateTokens = (user: IUser) => {
+  const token = jwt.sign(
+    { 
+      id: user._id, 
+      name: user.name, 
+      username: user.username, 
+      email: user.email 
+    }, 
+    JWT_SECRET, 
+    { expiresIn: JWT_EXPIRES_IN }
+  );
 
-  return { accessToken, refreshToken };
+  const refreshToken = jwt.sign(
+    { id: user._id }, 
+    JWT_SECRET, 
+    { expiresIn: JWT_REFRESH_EXPIRES_IN }
+  );
+
+  return { token, refreshToken };
 };
+
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -43,7 +58,7 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Mot de passe incorrect" });
     }
 
-    const { accessToken, refreshToken } = generateTokens(user._id.toString());
+    const { token, refreshToken } = generateTokens(user);
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
@@ -51,7 +66,7 @@ export const login = async (req: Request, res: Response) => {
       maxAge: 7 * 24 * 60 * 60 * 1000, 
     });
 
-    res.json({ accessToken, user: { id: user._id.toString(), name: user.name, email: user.email } });
+    res.json({ token, user: { id: user._id.toString(), name: user.name, email: user.email } });
   } catch (error) {
     console.error("Erreur lors de la connexion :", error);
     res.status(500).json({ message: "Erreur serveur" });
@@ -94,7 +109,7 @@ export const refreshToken = (req: Request, res: Response) => {
         return res.status(403).json({ message: "Refresh token invalide" });
       }
 
-      const { accessToken, refreshToken: newRefreshToken } = generateTokens(decoded.id.toString());
+      const { token, refreshToken: newRefreshToken } = generateTokens(decoded.id.toString());
 
       res.cookie("refreshToken", newRefreshToken, {
         httpOnly: true,
@@ -102,7 +117,7 @@ export const refreshToken = (req: Request, res: Response) => {
         maxAge: 7 * 24 * 60 * 60 * 1000, 
       });
 
-      res.json({ accessToken });
+      res.json({ token });
     });
   } catch (error) {
     console.error("Erreur lors du rafraîchissement du token :", error);
