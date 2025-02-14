@@ -13,9 +13,11 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "#e91e63" }}>
       <div className="container">
-        <Link className="navbar-brand" to="/">BW</Link>
+        <Link className="navbar-brand text-white font-weight-bold" to="/" style={{ fontSize: "1.5rem" }}>
+          BeyondWords
+        </Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -24,19 +26,19 @@ const Navbar: React.FC = () => {
             {auth?.user ? (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/profile">Profile</Link>
+                  <Link className="nav-link text-white" to="/profile">Profile</Link>
                 </li>
                 <li className="nav-item">
-                  <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
+                  <button className="btn btn-light text-danger" onClick={handleLogout}>Logout</button>
                 </li>
               </>
             ) : (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/login">Login</Link>
+                  <Link className="nav-link text-white" to="/login">Login</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/register">Signup</Link>
+                  <Link className="nav-link text-white" to="/register">Signup</Link>
                 </li>
               </>
             )}
