@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
-import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -7,9 +6,12 @@ const API_URL = "http://localhost:3010/api/auth";
 
 interface User {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   username: string;
   email: string;
+  gender?: "homme" | "femme" | "autre";
+  birthDate?: Date;
 }
 
 interface Post {
@@ -24,7 +26,7 @@ interface AuthContextType {
   user: User | null;
   posts: Post[];
   login: (email: string, password: string) => Promise<void>;
-  register: (name: string, username: string, email: string, password: string) => Promise<void>;
+  register: (firstName: string, lastName: string, username: string, email: string, password: string) => Promise<void>; // ✅ Correction
   logout: () => void;
 }
 
@@ -46,9 +48,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchPosts = async () => {
     try {
-      const { data } = await axios.get(`${API_URL}/posts`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/posts`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
       });
+
+      if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+
+      const data = await response.json();
       setPosts(data);
     } catch (error) {
       console.error("Erreur lors du chargement des posts :", error);
@@ -66,9 +77,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const decodedUser: any = jwtDecode(token);
         setUser({
           id: decodedUser.id,
-          name: decodedUser.name,
+          firstName: decodedUser.firstName,
+          lastName: decodedUser.lastName,
           username: decodedUser.username,
           email: decodedUser.email,
+          gender: decodedUser.gender || "autre",
+          birthDate: decodedUser.birthDate || "",
         });
 
         fetchPosts();
@@ -89,7 +103,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       console.log("Tentative de connexion avec :", { email });
 
-      const { data } = await axios.post(`${API_URL}/login`, { email, password }, { withCredentials: true });
+      const response = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) throw new Error("Erreur lors de la connexion");
+
+      const data = await response.json();
 
       if (!data.token || !data.user) {
         throw new Error("Réponse API invalide");
@@ -107,9 +132,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const register = async (name: string, username: string, email: string, password: string) => {
+  const register = async (firstName: string, lastName: string, username: string, email: string, password: string) => {
     try {
-      await axios.post(`${API_URL}/register`, { name, username, email, password });
+      const response = await fetch(`${API_URL}/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ firstName, lastName, username, email, password }),
+      });
+
+      if (!response.ok) throw new Error("Erreur lors de l'inscription");
+
       navigate("/login");
     } catch (error) {
       console.error("Erreur d'inscription :", error);

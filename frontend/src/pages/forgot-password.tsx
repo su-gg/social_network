@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -12,14 +11,23 @@ const ForgotPassword: React.FC = () => {
     setMessage("");
 
     try {
-      const response = await axios.post("http://localhost:3010/api/auth/forgot-password", { email });
-      setMessage(`✅ ${response.data.message}`);
-    } catch (error: any) {
-      if (error.response) {
-        setMessage(`❌ ${error.response.data.message}`);
-      } else {
-        setMessage("❌ Erreur réseau. Vérifiez votre connexion.");
+      const response = await fetch("http://localhost:3010/api/auth/forgot-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Erreur lors de la demande de réinitialisation.");
       }
+
+      setMessage(`✅ ${data.message}`);
+    } catch (error: any) {
+      setMessage(`❌ ${error.message || "Erreur réseau. Vérifiez votre connexion."}`);
     } finally {
       setLoading(false);
     }

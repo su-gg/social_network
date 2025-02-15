@@ -6,7 +6,6 @@ import Home from "./pages/home";
 import Login from "./pages/login";
 import Register from "./pages/register";
 import Profile from "./pages/profile";
-import Chat from "./pages/chat";
 
 import Navbar from "./components/navbar";
 import PrivateRoute from "./components/PrivateRoute";
@@ -27,8 +26,6 @@ const App: React.FC = () => {
         path="/profile"
         element={<PrivateRoute element={<Profile />} />}
       />
-        <Route path="/chat" element={<Chat />} />
-    
         </Routes>
         </div>
         </>

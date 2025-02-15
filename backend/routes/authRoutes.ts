@@ -1,6 +1,5 @@
 import express from "express";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 import dotenv from "dotenv";
@@ -18,7 +17,7 @@ const createTransporter = (email: string) => {
     transporterConfig = {
       host: process.env.EMAIL_HOST_HOTMAIL,
       port: Number(process.env.EMAIL_PORT_HOTMAIL),
-      secure: process.env.EMAIL_SECURE_HOTMAIL === "true",
+      secure: process.env.EMAIL_SECURE_HOTMAIL === "false",
       auth: { user: process.env.EMAIL_USER_HOTMAIL, pass: process.env.EMAIL_PASS_HOTMAIL },
       tls: { ciphers: "SSLv3" },
     };
@@ -31,14 +30,12 @@ const createTransporter = (email: string) => {
     transporterConfig = {
       host: "smtp.mail.yahoo.com",
       port: 465,
-      secure: true,
       auth: { user: process.env.EMAIL_USER_YAHOO, pass: process.env.EMAIL_PASS_YAHOO },
     };
   } else if (email.endsWith("@zoho.com")) {
     transporterConfig = {
       host: "smtp.zoho.com",
       port: 465,
-      secure: true,
       auth: { user: process.env.EMAIL_USER_ZOHO, pass: process.env.EMAIL_PASS_ZOHO },
     };
   } else {
