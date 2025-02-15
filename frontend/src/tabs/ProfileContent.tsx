@@ -13,6 +13,29 @@ const ProfileContent: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [postMessage, setPostMessage] = useState<string>("");
   const [postPhoto, setPostPhoto] = useState<string>("");
+  const [userFirstName, setUserFirstName] = useState<string>("");
+
+  const fetchUserData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/me`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+
+      const data = await response.json();
+      setUserFirstName(data.firstName);  
+
+    } catch (error) {
+      console.error("Erreur lors de la récupération des informations utilisateur :", error);
+    }
+  };
+
 
   const fetchPosts = async () => {
     try {
@@ -35,6 +58,7 @@ const ProfileContent: React.FC = () => {
   };
 
   useEffect(() => {
+    fetchUserData();
     fetchPosts();
   }, []);
 
@@ -91,11 +115,14 @@ const ProfileContent: React.FC = () => {
     createPost(newPost);
   };
   
-
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
 
   return (
     <div className="card p-4 shadow-lg" style={{ backgroundColor: '#ffebee' }}>
-      <h2 className="text-center" style={{ color: '#d81b60' }}>Welcome 👋</h2>
+      <h2 className="text-center" style={{ color: '#d81b60' }}>Welcome {userFirstName ? capitalizeFirstLetter(userFirstName)  : "User"} 👋</h2>
       <form onSubmit={handlePostSubmit} className="mb-3">
         <textarea className="form-control mb-2" value={postMessage} onChange={(e) => setPostMessage(e.target.value)} placeholder="Tap your message..." rows={3} style={{ borderColor: '#e91e63' }} />
         <input type="text" className="form-control mb-2" value={postPhoto} onChange={(e) => setPostPhoto(e.target.value)} placeholder="Photo URL (optional)" style={{ borderColor: '#e91e63' }} />
