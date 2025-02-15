@@ -9,6 +9,8 @@ export interface IUser extends Document {
   password: string;
   gender?: "homme" | "femme" | "autre";
   birthDate?: Date ;
+  displayNameType: { type: String, enum: ["firstName", "lastName", "fullName", "username"], default: "fullName" },
+  isProfilePublic: Boolean
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
 }
@@ -21,8 +23,15 @@ const UserSchema = new Schema<IUser>({
   password: { type: String, required: true },
   gender: { type: String, enum: ["homme", "femme", "autre"], default: "autre" },
   birthDate: { type: Date, default: null },
+  displayNameType: { 
+    type: String, 
+    enum: ["firstName", "lastName", "fullName", "username"], 
+    default: "fullName" 
+  },
+  isProfilePublic: { type: Boolean, required: true },
   resetPasswordToken: { type: String, default: null },  
   resetPasswordExpires: { type: Date, default: null },  
-}, { timestamps: true });
+}, 
+{ timestamps: true });
 
 export default mongoose.model<IUser>("User", UserSchema);
