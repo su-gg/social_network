@@ -47,6 +47,7 @@ const createTransporter = (email: string) => {
 router.post("/login", authControllers.login);
 router.get("/refresh-token", authControllers.refreshToken);
 router.post("/register", authControllers.register);
+router.post("/updateProfile", authenticateToken, authControllers.updateProfile);
 
 router.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
