@@ -1,6 +1,8 @@
 import express from "express";
 import Post from "../models/post";
 import { authenticateToken } from "../middleware/authMiddleware";
+import mongoose from "mongoose";
+
 const router = express.Router();
 
 router.get("/", authenticateToken, async (req:any, res) => {
@@ -40,6 +42,12 @@ router.post("/",async (req: any, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const postId = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).json({ message: "ID de post invalide" });
+    }
+
+    console.log("Tentative de suppression du post avec l'ID :", postId);
+
     const deletedPost = await Post.findByIdAndDelete(postId);
 
     if (!deletedPost) {
@@ -48,7 +56,7 @@ router.delete("/:id", async (req, res) => {
 
     res.status(200).json({ message: "Post supprimé avec succès" });
   } catch (err) {
-    console.error("Erreur lors de la suppression du post :", err);
+    console.error("Erreur serveur lors de la suppression du post :", err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 });

@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 const API_URL = "http://localhost:3010/api/auth";
 
 interface User {
-  id: string;
+  _id: string;
   firstName: string;
   lastName: string;
   username: string;
@@ -15,11 +15,9 @@ interface User {
 }
 
 interface Post {
-  id: string;
-  message: string;
+  _id: string;
+  content: string;
   photoUrl?: string;
-  author: string;
-  createdAt: string;
 }
 
 interface AuthContextType {
@@ -76,7 +74,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       try {
         const decodedUser: any = jwtDecode(token);
         setUser({
-          id: decodedUser.id,
+          _id: decodedUser.id,
           firstName: decodedUser.firstName,
           lastName: decodedUser.lastName,
           username: decodedUser.username,

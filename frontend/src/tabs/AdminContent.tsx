@@ -15,18 +15,27 @@ const AdminContent: React.FC = () => {
         const response = await fetch("http://localhost:3010/api/auth/me", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-        const data = await response.json();
-        if (response.ok) {
-          setFirstName(data.firstName || "");
-          setLastName(data.lastName || "");
-          setUsername(data.username || "");
-          setBirthDate(data.birthDate || "");
-          setGender(data.gender || "Homme");
-          setDisplayNameType(data.displayNameType || "fullName");
-          setIsProfilePublic(data.isProfilePublic !== undefined ? data.isProfilePublic : true);
-        } else {
-          console.error("Erreur de récupération des données :", data.message);
+    
+        if (!response.ok) {
+          // Si la réponse n'est pas OK (status HTTP non 2xx), on lance une erreur
+          throw new Error(`Erreur HTTP: ${response.status}`);
         }
+    
+        const contentType = response.headers.get("Content-Type");
+        if (!contentType || !contentType.includes("application/json")) {
+          // Si le type de contenu n'est pas JSON, on lance une erreur
+          throw new Error("Réponse invalide, attendu du JSON");
+        }
+    
+        const data = await response.json(); // Parse JSON uniquement si le type est correct
+    
+        setFirstName(data.firstName || "");
+        setLastName(data.lastName || "");
+        setUsername(data.username || "");
+        setBirthDate(data.birthDate || "");
+        setGender(data.gender || "Homme");
+        setDisplayNameType(data.displayNameType || "fullName");
+        setIsProfilePublic(data.isProfilePublic !== undefined ? data.isProfilePublic : true);
       } catch (error) {
         console.error("Erreur lors du chargement des informations :", error);
       }
@@ -58,7 +67,6 @@ const AdminContent: React.FC = () => {
     }
   };
 
-  // Déterminer le nom à afficher
   const getDisplayName = () => {
     switch (displayNameType) {
       case "firstName":

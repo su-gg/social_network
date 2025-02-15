@@ -1,11 +1,10 @@
 import express from "express";
-
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 import dotenv from "dotenv";
-
 import User from "../models/user";
 import * as authControllers from "../controllers/auth";
+import { authenticateToken } from "../middleware/authMiddleware";  // Assurez-vous que le middleware est importé
 
 dotenv.config();
 const router = express.Router();
@@ -47,11 +46,8 @@ const createTransporter = (email: string) => {
 
 router.post("/login", authControllers.login);
 router.get("/refresh-token", authControllers.refreshToken);
+router.post("/register", authControllers.register);
 
-// 📌 Route d'inscription avec envoi d'email de confirmation
-router.post("/register", authControllers.register) 
-
-// 📌 Route pour demander une réinitialisation de mot de passe
 router.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
 
@@ -82,6 +78,25 @@ router.post("/forgot-password", async (req, res) => {
     console.error("❌ Erreur lors de la réinitialisation :", error);
     res.status(500).json({ message: "Erreur lors de la réinitialisation" });
   }
+});
+
+router.get("/me", authenticateToken, (req : any, res) => {
+  const user = req.user; 
+console.log(req.user)
+  if (!user) {
+    return res.status(401).json({ message: "Utilisateur non authentifié" });
+  }
+
+  
+  res.json({
+    firstName: user.firstName,
+    lastName: user.lastName,
+    username: user.username,
+    birthDate: user.birthDate ? user.birthDate.toISOString() : null,
+    gender: user.gender,
+    displayNameType: user.displayNameType,
+    isProfilePublic: user.isProfilePublic,
+  });
 });
 
 export default router;

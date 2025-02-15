@@ -8,7 +8,6 @@ export const register = async (req: any, res: any) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ firstName, lastName, username, email, password: hashedPassword });
 
-    console.log("coucou")
     await newUser.save();
 
     //const transporter = createTransporter(email);

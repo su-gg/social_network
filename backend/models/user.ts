@@ -8,7 +8,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   gender?: "homme" | "femme" | "autre";
-  birthDate?: Date;
+  birthDate?: Date ;
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
 }

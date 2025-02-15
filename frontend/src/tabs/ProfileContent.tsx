@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 interface Post {
-  id: number;
+  _id: string ;
   content: string;
   photoUrl?: string;
 }
@@ -14,18 +14,28 @@ const ProfileContent: React.FC = () => {
   const [postMessage, setPostMessage] = useState<string>("");
   const [postPhoto, setPostPhoto] = useState<string>("");
 
-  useEffect(() => {
-    const savedPosts = localStorage.getItem("posts");
-    if (savedPosts) {
-      try {
-        const parsedPosts = JSON.parse(savedPosts);
-        if (Array.isArray(parsedPosts)) {
-          setPosts(parsedPosts);
-        }
-      } catch (error) {
-        console.error("Erreur lors de la récupération des posts :", error);
-      }
+  const fetchPosts = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/posts`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+      });
+
+      if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+
+      const data = await response.json();
+      setPosts(data);  
+    } catch (error) {
+      console.error("Erreur lors de la récupération des posts :", error);
     }
+  };
+
+  useEffect(() => {
+    fetchPosts();
   }, []);
 
   const createPost = async (post:any) => {
@@ -50,19 +60,37 @@ const ProfileContent: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    localStorage.setItem("posts", JSON.stringify(posts));
-  }, [posts]);
+  const deletePost = async (postId: string) => {
+    try {
+      console.log("ID du post à supprimer :", postId); 
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/posts/${postId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+      });
+
+      if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+
+      setPosts(posts.filter(post => post._id !== postId));
+
+    } catch (error) {
+      console.error("Erreur lors de la suppression du post :", error);
+    }
+  };
+ 
 
   const handlePostSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (postMessage.trim() === "" && postPhoto.trim() === "") return;
-    const newPost: Post = { id: Date.now(), content: postMessage, photoUrl: postPhoto || undefined };
+    const newPost: Post = { _id: Date.now().toString(), content: postMessage, photoUrl: postPhoto || undefined };
     setPostMessage("");
     setPostPhoto("");
     createPost(newPost);
   };
-
+  
 
 
   return (
@@ -77,9 +105,16 @@ const ProfileContent: React.FC = () => {
       {posts.length === 0 ? <p>No post.</p> : (
         <ul className="list-group">
           {posts.map((post) => (
-            <li key={post.id} className="list-group-item bg-white shadow-sm">
+            <li key={post._id} className="list-group-item bg-white shadow-sm">
               {post.content && <p>{post.content}</p>}
               {post.photoUrl && <img src={post.photoUrl} alt="Post" className="img-fluid" />}
+              <button
+                className="btn btn-danger btn-sm mt-2"
+                onClick={() => deletePost(post._id)}  
+                style={{ backgroundColor: '#e91e63', color: 'white' }}
+              >
+                Delete
+              </button>
             </li>
           ))}
         </ul>
