@@ -1,11 +1,15 @@
 import express from "express";
 import Post from "../models/post";
-
+import { authenticateToken } from "../middleware/authMiddleware";
 const router = express.Router();
 
-router.get("/", async (_req, res) => {
+router.get("/", authenticateToken, async (req:any, res) => {
   try {
-    const posts = await Post.find().populate("userId", "name username");
+    const userId = req.user?.id;  
+    if (!userId) {
+      return res.status(400).json({ message: "Utilisateur non trouvé" });
+    }
+    const posts = await Post.find({ userId }).populate("userId", "name username");
     res.status(200).json(posts);
   } catch (err) {
     console.error("Erreur serveur :", err);
