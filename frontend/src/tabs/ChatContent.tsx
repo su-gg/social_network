@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import socket from "../socket"; // Import du socket
+//import socket from "../socket"; // Import du socket
 
 const ChatContent: React.FC = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
   const [friends, setFriends] = useState<string[]>([]);
 
-  useEffect(() => {
-    socket.on("message", (data: string) => {
-      setMessages((prev) => [...prev, data]);
-    });
+  // useEffect(() => {
+  //   socket.on("message", (data: string) => {
+  //     setMessages((prev) => [...prev, data]);
+  //   });
 
-    return () => {
-      socket.off("message");
-    };
-  }, []);
+  //   return () => {
+  //     socket.off("message");
+  //   };
+  // }, []);
 
   useEffect(() => {
     const fetchFriends = async () => {
@@ -34,7 +34,7 @@ const ChatContent: React.FC = () => {
 
   const sendMessage = () => {
     if (message.trim() !== "") {
-      socket.emit("message", message);
+      //socket.emit("message", message);
       setMessages((prev) => [...prev, `Moi: ${message}`]);
       setMessage("");
     }

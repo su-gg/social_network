@@ -24,25 +24,25 @@ const server = createServer(app);
 
 
 
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-  },
-});
+// const io = new Server(server, {
+//   cors: {
+//     origin: "http://localhost:3000",
+//     methods: ["GET", "POST"],
+//   },
+// });
 
-io.on("connection", (socket) => {
-  console.log("✅ Un utilisateur s'est connecté via WebSocket");
+// io.on("connection", (socket) => {
+//   console.log("✅ Un utilisateur s'est connecté via WebSocket");
 
-  socket.on("message", (data) => {
-    console.log("📩 Message reçu :", data);
-    io.emit("message", data);
-  });
+//   socket.on("message", (data) => {
+//     console.log("📩 Message reçu :", data);
+//     io.emit("message", data);
+//   });
 
-  socket.on("disconnect", () => {
-    console.log("❌ Un utilisateur s'est déconnecté");
-  });
-});
+//   socket.on("disconnect", () => {
+//     console.log("❌ Un utilisateur s'est déconnecté");
+//   });
+// });
 
 
 
