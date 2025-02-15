@@ -3,9 +3,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 interface Post {
   id: number;
-  message: string;
+  content: string;
   photoUrl?: string;
 }
+const API_URL = "http://localhost:3010/api/auth";
+
 
 const ProfileContent: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -26,6 +28,28 @@ const ProfileContent: React.FC = () => {
     }
   }, []);
 
+  const createPost = async (post:any) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/posts`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(post)
+      });
+
+      if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+
+      const data = await response.json();
+      setPosts([data, ...posts]);
+
+    } catch (error) {
+      console.error("Erreur lors du chargement des posts :", error);
+    }
+  };
+
   useEffect(() => {
     localStorage.setItem("posts", JSON.stringify(posts));
   }, [posts]);
@@ -33,11 +57,13 @@ const ProfileContent: React.FC = () => {
   const handlePostSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (postMessage.trim() === "" && postPhoto.trim() === "") return;
-    const newPost: Post = { id: Date.now(), message: postMessage, photoUrl: postPhoto || undefined };
-    setPosts([newPost, ...posts]);
+    const newPost: Post = { id: Date.now(), content: postMessage, photoUrl: postPhoto || undefined };
     setPostMessage("");
     setPostPhoto("");
+    createPost(newPost);
   };
+
+
 
   return (
     <div className="card p-4 shadow-lg" style={{ backgroundColor: '#ffebee' }}>
@@ -52,7 +78,7 @@ const ProfileContent: React.FC = () => {
         <ul className="list-group">
           {posts.map((post) => (
             <li key={post.id} className="list-group-item bg-white shadow-sm">
-              {post.message && <p>{post.message}</p>}
+              {post.content && <p>{post.content}</p>}
               {post.photoUrl && <img src={post.photoUrl} alt="Post" className="img-fluid" />}
             </li>
           ))}

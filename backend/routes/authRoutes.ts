@@ -1,11 +1,11 @@
 import express from "express";
-import bcrypt from "bcryptjs";
+
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 import dotenv from "dotenv";
 
 import User from "../models/user";
-import { login, refreshToken } from "../controllers/authController";
+import * as authControllers from "../controllers/auth";
 
 dotenv.config();
 const router = express.Router();
@@ -45,39 +45,11 @@ const createTransporter = (email: string) => {
   return nodemailer.createTransport(transporterConfig);
 };
 
-router.post("/login", login);
-router.get("/refresh-token", refreshToken);
+router.post("/login", authControllers.login);
+router.get("/refresh-token", authControllers.refreshToken);
 
 // 📌 Route d'inscription avec envoi d'email de confirmation
-router.post("/register", async (req, res) => {
-  try {
-    const { firstName, lastName, username, email, password } = req.body;
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ firstName, lastName, username, email, password: hashedPassword });
-
-    console.log("coucou")
-    await newUser.save();
-console.log("toto")
-    //const transporter = createTransporter(email);
-    //if (!transporter) {
-    //  return res.status(400).json({ message: "Fournisseur email non supporté" });
-    //}
-
-    const mailOptions = {
-      to: email,
-      from: process.env.EMAIL_USER,
-      subject: "Bienvenue sur notre réseau social !",
-      text: `Bonjour ${firstName},\n\nMerci de vous être inscrit sur notre plateforme !`,
-    };
-
-    //await transporter.sendMail(mailOptions);
-    res.status(201).json({ message: "Utilisateur créé et email envoyé !" });
-  } catch (error) {
-    console.error("❌ Erreur lors de l'inscription :", error);
-    res.status(500).json({ error: "Erreur lors de l'inscription" });
-  }
-});
+router.post("/register", authControllers.register) 
 
 // 📌 Route pour demander une réinitialisation de mot de passe
 router.post("/forgot-password", async (req, res) => {

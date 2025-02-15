@@ -15,6 +15,7 @@ router.get("/", async (_req, res) => {
 
 router.post("/",async (req: any, res) => {
   try {
+    console.log(req.body)
     const { content } = req.body;
     const userId = req.user.id;  
 
