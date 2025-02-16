@@ -2,6 +2,10 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+interface RegisterResponse {
+  message?: string;
+  errors?:{field:string; message:string} [];
+}
 const Register = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -17,12 +21,18 @@ const Register = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({}); // Réinitialiser les erreurs
-    
+  
     try {
-      const response = await auth?.register(firstName, lastName, username, email, password);
+      const response = await auth?.register(firstName, lastName, username, email, password) as RegisterResponse | undefined;
+      
       console.log("📌 Réponse du register :", response); // Debugging
   
-      if (response?.errors && Array.isArray(response.errors)) {
+      if (!response) {
+        setErrors({ global: "Unexpected error occurred. Please try again." });
+        return;
+      }
+  
+      if (response.errors && Array.isArray(response.errors)) {
         const fieldErrors: Record<string, string> = {};
   
         response.errors.forEach((err) => {
@@ -32,16 +42,18 @@ const Register = () => {
         setErrors(fieldErrors);
       } 
   
-      if (response?.message === "Registration failed") {
-        setErrors((prev) => ({ ...prev, global: "Registration failed. Please check bellow." }));
+      if (response.message === "Registration failed") {
+        setErrors((prev) => ({ ...prev, global: "Registration failed. Please check below." }));
       } else {
         setSuccessMessage("Your account has been successfully created!");
         setTimeout(() => navigate("/login"), 4500);
       }
     } catch (error) {
       console.error("Erreur lors de l'inscription :", error);
+      setErrors({ global: "An error occurred. Please try again later." });
     }
   };
+  
   
   return (
     <div className="container mt-5">

@@ -12,39 +12,51 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+const corsOptions = {
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
+// Routes
 app.use("/api/auth", authRoutes);
 console.log("✅ Route /api/auth chargée !");
-app.use("/api/auth/posts",  authenticateToken, postRoutes);
+app.use("/api/auth/posts", authenticateToken, postRoutes);
 console.log("✅ Route /api/posts chargée !");
+app.use("/api/auth/friends", authenticateToken, authRoutes);
+console.log("✅ Route /api/auth/friends chargée !");
 
 const server = createServer(app);
 
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
 
+io.on("connection", (socket) => {
+  console.log("✅ Un utilisateur s'est connecté via WebSocket :", socket.id);
 
-// const io = new Server(server, {
-//   cors: {
-//     origin: "http://localhost:3000",
-//     methods: ["GET", "POST"],
-//   },
-// });
+  socket.on("join", (userId) => {
+    socket.join(userId);
+    console.log(`📌 L'utilisateur ${userId} a rejoint sa room personnelle`);
+  });
 
-// io.on("connection", (socket) => {
-//   console.log("✅ Un utilisateur s'est connecté via WebSocket");
+  socket.on("message", (data) => {
+    console.log("📩 Message reçu :", data);
+    io.emit("message", data);
+  });
 
-//   socket.on("message", (data) => {
-//     console.log("📩 Message reçu :", data);
-//     io.emit("message", data);
-//   });
-
-//   socket.on("disconnect", () => {
-//     console.log("❌ Un utilisateur s'est déconnecté");
-//   });
-// });
-
-
+  socket.on("disconnect", () => {
+    console.log("❌ Un utilisateur s'est déconnecté");
+  });
+});
 
 const MONGO_URI = process.env.MONGO_URI;
 if (!MONGO_URI) {
@@ -61,4 +73,8 @@ mongoose
   });
 
 const PORT = process.env.PORT || 3010;
-server.listen(PORT, () => console.log(`🚀 Serveur (HTTP + WebSocket) lancé sur http://localhost:${PORT}`));
+server.listen(PORT, () =>
+  console.log(`🚀 Serveur (HTTP + WebSocket) lancé sur http://localhost:${PORT}`)
+);
+
+export { io };

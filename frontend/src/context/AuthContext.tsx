@@ -12,48 +12,36 @@ interface User {
   email: string;
   gender?: "homme" | "femme" | "autre";
   birthDate?: Date;
-}
-
-interface Post {
-  _id: string;
-  content: string;
-  photoUrl?: string;
-}
-
-interface RegisterResponse {
-  message: string;
-  errors?: { field: string; message: string }[];
+  friends?: User[];
 }
 
 interface AuthContextType {
   user: User | null;
-  posts: Post[];
   login: (email: string, password: string) => Promise<void>;
-  register: (firstName: string, lastName: string, username: string, email: string, password: string) => Promise<RegisterResponse>;
+  register: (firstName: string, lastName: string, username: string, email: string, password: string) => Promise<void>;
   logout: () => void;
+  sendFriendRequest: (friendUsername: string) => Promise<void>;
+  respondToFriendRequest: (requestId: string, action: "accept" | "decline") => Promise<void>;
+  fetchFriends: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [posts, setPosts] = useState<Post[]>([]);
   const navigate = useNavigate();
-  const location = useLocation(); 
+  const location = useLocation();
 
   const logout = () => {
-    console.log("Déconnexion...");
     localStorage.removeItem("token");
-    navigate("/");
     setUser(null);
-    setPosts([]);
-    
+    navigate("/");
   };
 
-  const fetchPosts = async () => {
+  const fetchFriends = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/posts`, {
+      const response = await fetch(`${API_URL}/listFriend`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -64,54 +52,46 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
 
       const data = await response.json();
-      setPosts(data);
+      setUser((prevUser) => (prevUser ? { ...prevUser, friends: data.friends } : prevUser));
     } catch (error) {
-      console.error("Erreur lors du chargement des posts :", error);
+      console.error("Erreur lors de la récupération des amis :", error);
     }
   };
 
   useEffect(() => {
-    console.log("🌀 useEffect exécuté !");
-
-    const loadUserFromToken = () => {
+    const loadUserFromToken = async () => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
       try {
         const decodedUser: any = jwtDecode(token);
-        setUser({
-          _id: decodedUser.id,
-          firstName: decodedUser.firstName,
-          lastName: decodedUser.lastName,
-          username: decodedUser.username,
-          email: decodedUser.email,
-          gender: decodedUser.gender || "autre",
-          birthDate: decodedUser.birthDate || "",
+        const response = await fetch(`${API_URL}/me`, {
+          method: "GET",
+          headers: { "Authorization": `Bearer ${token}` },
         });
 
-        fetchPosts();
+        if (!response.ok) throw new Error("Impossible de récupérer les informations utilisateur");
+
+        const userData = await response.json();
+        setUser({ ...decodedUser, ...userData });
 
         if (location.pathname === "/login" || location.pathname === "/register") {
           navigate("/profile");
         }
       } catch (err) {
-        console.error("❌ Token invalide ou expiré:", err);
+        console.error("Token invalide ou expiré:", err);
         logout();
       }
     };
 
     loadUserFromToken();
-  }, []); 
+  }, []);
 
   const login = async (email: string, password: string) => {
     try {
-      console.log("Tentative de connexion avec :", { email });
-
       const response = await fetch(`${API_URL}/login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ email, password }),
       });
@@ -119,16 +99,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!response.ok) throw new Error("Erreur lors de la connexion");
 
       const data = await response.json();
-
-      if (!data.token || !data.user) {
-        throw new Error("Réponse API invalide");
-      }
-
       localStorage.setItem("token", data.token);
-      console.log("✅ Token enregistré dans localStorage :", localStorage.getItem("token"));
-
       setUser(data.user);
-      fetchPosts();
       navigate("/profile");
     } catch (error) {
       console.error("Erreur de connexion :", error);
@@ -136,49 +108,61 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const register = async (
-    firstName: string,
-    lastName: string,
-    username: string,
-    email: string,
-    password: string
-  ): Promise<RegisterResponse> => {
+  const register = async (firstName: string, lastName: string, username: string, email: string, password: string) => {
     try {
       const response = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstName, lastName, username, email, password }),
       });
-  
+
       const data = await response.json();
-      console.log("📌 Réponse API brute :", data); // Debugging
-  
-      if (!response.ok) {
-        console.error("❌ Échec de l'inscription :", data);
-  
-        return {
-          message: "Registration failed",
-          errors: data.errors || [{ field: "global", message: data.message || "Unknown error" }],
-        };
-      }
-  
-      return {
-        message: data.message || "Registration successful",
-      };
+      if (!response.ok) throw new Error(data.message || "Erreur lors de l'inscription");
+
+      navigate("/login");
     } catch (error) {
-      console.error("❌ Erreur réseau :", error);
-      return {
-        message: "Network error, please try again later.",
-        errors: [{ field: "global", message: "Server connection failed" }],
-      };
+      console.error("Erreur d'inscription :", error);
+      alert("Erreur d'inscription. Veuillez vérifier vos informations.");
     }
   };
-  
-  
-  
+
+  const sendFriendRequest = async (friendUsername: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/sendFriendRequest`, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ friendUsername }),
+      });
+
+      if (!response.ok) throw new Error("Erreur lors de l'envoi de la demande d'ami");
+      alert("Demande d'ami envoyée !");
+    } catch (error) {
+      console.error("Erreur lors de l'envoi de la demande d'ami :", error);
+      alert("Erreur lors de l'envoi de la demande d'ami.");
+    }
+  };
+
+  const respondToFriendRequest = async (requestId: string, action: "accept" | "decline") => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/respondToFriendRequest`, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ requestId, action }),
+      });
+
+      if (!response.ok) throw new Error("Erreur lors de la réponse à la demande d'ami");
+      alert(`Demande d'ami ${action === "accept" ? "acceptée" : "refusée"} !`);
+      fetchFriends();
+    } catch (error) {
+      console.error("Erreur lors de la réponse à la demande d'ami :", error);
+      alert("Erreur lors de la réponse à la demande d'ami.");
+    }
+  };
 
   return (
-    <AuthContext.Provider value={{ user, posts, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout, sendFriendRequest, respondToFriendRequest, fetchFriends }}>
       {children}
     </AuthContext.Provider>
   );

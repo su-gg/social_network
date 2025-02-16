@@ -13,6 +13,7 @@ export interface IUser extends Document {
   isProfilePublic: Boolean
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
+  friends: mongoose.Types.ObjectId[];
 }
 
 const UserSchema = new Schema<IUser>({
@@ -31,6 +32,7 @@ const UserSchema = new Schema<IUser>({
   isProfilePublic: { type: Boolean, default: true },
   resetPasswordToken: { type: String, default: null },  
   resetPasswordExpires: { type: Date, default: null },  
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 }, 
 { timestamps: true });
 

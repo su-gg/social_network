@@ -4,6 +4,7 @@ import ProfileContent from "../tabs/ProfileContent";
 import AdminContent from "../tabs/AdminContent";
 import ChatContent from "../tabs/ChatContent";
 import MessagesContent from "../tabs/MessagesContent";
+import FriendsContent from "../tabs/friendsContent";
 
 const Profile: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("profile");
@@ -14,6 +15,7 @@ const Profile: React.FC = () => {
       {activeTab === "admin" && <AdminContent />}
       {activeTab === "chat" && <ChatContent />}
       {activeTab === "messagerie" && <MessagesContent />}
+      {activeTab === "friends" && <FriendsContent />}
     </Layout>
   );
 };

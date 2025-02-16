@@ -4,7 +4,7 @@ import crypto from "crypto";
 import dotenv from "dotenv";
 import User from "../models/user";
 import * as authControllers from "../controllers/auth";
-import { authenticateToken } from "../middleware/authMiddleware";  // Assurez-vous que le middleware est importé
+import { authenticateToken } from "../middleware/authMiddleware"; 
 
 dotenv.config();
 const router = express.Router();
@@ -48,6 +48,12 @@ router.post("/login", authControllers.login);
 router.get("/refresh-token", authControllers.refreshToken);
 router.post("/register", authControllers.register);
 router.post("/updateProfile", authenticateToken, authControllers.updateProfile);
+router.post("/sendFriendRequest",authenticateToken,authControllers.sendFriendRequest);
+router.post("/respondToFriendRequest", authenticateToken, authControllers.respondToFriendRequest)
+router.get("/getFriendRequest", authenticateToken, authControllers.getFriendRequests)
+router.post("/removeFriend", authenticateToken, authControllers.removeFriend);
+router.get("/listFriend", authenticateToken, authControllers.listFriends);
+router.get("/getUserSuggestion", authenticateToken, authControllers.getUserSuggestions)
 
 router.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
