@@ -3,21 +3,28 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
     "cors": "^2.8.5",
     "cra-template": "1.2.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.6",
+    "nodemailer": "^6.10.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.5",
     "react-scripts": "^5.0.1",
+    "socket.io": "^4.8.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3",
     "uuid": "^11.0.5"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start:frontend": "cd frontend && npm start",
+    "start:backend": "node -r ts-node/register backend/server.ts",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
   },
   "eslintConfig": {
     "extends": [
@@ -38,9 +45,13 @@
     ]
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/http-proxy-middleware": "^0.19.3",
+    "@types/jsonwebtoken": "^9.0.8",
+    "@types/nodemailer": "^6.4.17",
     "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.3"
+    "@types/react-dom": "^19.0.3",
+    "concurrently": "^9.1.2"
   }
 }
