@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
@@ -19,6 +20,15 @@ app.use("/api/auth", authRoutes);
 console.log("✅ Route /api/auth chargée !");
 app.use("/api/auth/posts",  authenticateToken, postRoutes);
 console.log("✅ Route /api/posts chargée !");
+
+// Servir les fichiers du frontend en production
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`));
 
 const server = createServer(app);
 

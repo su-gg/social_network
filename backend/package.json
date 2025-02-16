@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "main": "server.ts",
   "scripts": {
-    "start:frontend": "cd ../frontend && npm start",
-    "start:backend": "node -r ts-node/register ../backend/server.ts",
-    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
-    "build": "cd frontend && npm install && npm run build" 
+    "build": "cd frontend && npm install && npm run build",
+    "start": "node dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only backend/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +26,7 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.8",
-    "@types/nodemailer": "^6.4.17"
+    "@types/nodemailer": "^6.4.17",
+    "ts-node-dev": "^2.0.0"
   }
 }
