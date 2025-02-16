@@ -16,10 +16,10 @@ const Register = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response= (await auth?.register(firstName, lastName, username, email, password)) 
+      const response = await auth?.register(firstName, lastName, username, email, password);
       
       if (response?.message) {
-        setSuccessMessage("Votre compte a été crée avec succès !");
+        setSuccessMessage("Votre compte a été créé avec succès !");
         setTimeout(() => {
           navigate("/login"); 
         }, 4500);
@@ -38,62 +38,34 @@ const Register = () => {
   };
 
   return (
-    <div>
-    {successMessage && (
- <div 
- style={{
-   backgroundColor: "#e91e63",
-   color: "white",
-   padding: "10px",
-   borderRadius: "5px",
-   textAlign: "center",
-   fontWeight: "bold",
-   marginBottom: "15px"
- }}
- role="alert"
->       {successMessage}
+    <div className="container mt-5">
+      {successMessage && (
+        <div className="alert text-white text-center fw-bold" style={{ backgroundColor: "#e91e63" }} role="alert">
+          {successMessage}
+        </div>
+      )}
+      <div className="card p-4 shadow-lg">
+        <h2 className="text-center mb-4">Sign up</h2>
+        <form onSubmit={handleRegister}>
+          <div className="mb-3">
+            <input type="text" className="form-control" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
           </div>
-            )}
-      <h2>Inscription</h2>
-      <form onSubmit={handleRegister}>
-        <input 
-          type="text" 
-          placeholder="Prénom" 
-          value={firstName} 
-          onChange={(e) => setFirstName(e.target.value)} 
-          required 
-        />
-        <input 
-          type="text" 
-          placeholder="Nom" 
-          value={lastName} 
-          onChange={(e) => setLastName(e.target.value)} 
-          required 
-        />
-        <input 
-          type="text" 
-          placeholder="Nom d'utilisateur" 
-          value={username} 
-          onChange={(e) => setUsername(e.target.value)} 
-          required 
-        />
-        <input 
-          type="email" 
-          placeholder="Email" 
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)} 
-          required 
-        />
-        <input 
-          type="password" 
-          placeholder="Mot de passe" 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          required 
-        />
-        <button type="submit">S'inscrire</button>
-      </form>
-      <button onClick={handleGoBack}>Retour</button>
+          <div className="mb-3">
+            <input type="text" className="form-control" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+          </div>
+          <div className="mb-3">
+            <input type="text" className="form-control" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+          </div>
+          <div className="mb-3">
+            <input type="email" className="form-control" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          </div>
+          <div className="mb-3">
+            <input type="password" className="form-control" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          </div>
+          <button type="submit" className="btn text-white w-100" style={{ backgroundColor: "#e91e63" }}>Sign up</button>
+        </form>
+        <button className="btn btn-secondary w-100 mt-2" onClick={handleGoBack}>Return</button>
+      </div>
     </div>
   );
 };

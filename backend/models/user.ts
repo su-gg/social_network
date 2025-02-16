@@ -7,7 +7,7 @@ export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
-  gender?: "homme" | "femme" | "autre";
+  gender?: "Homme" | "Femme" | "Autre";
   birthDate?: Date ;
   displayNameType: { type: String, enum: ["firstName", "lastName", "fullName", "username"], default: "fullName" },
   isProfilePublic: Boolean
@@ -21,7 +21,7 @@ const UserSchema = new Schema<IUser>({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  gender: { type: String, enum: ["homme", "femme", "autre"], default: "autre" },
+  gender: { type: String, enum: ["Homme", "Femme", "Autre"], default: "Autre" },
   birthDate: { type: Date, default: null },
   displayNameType: { 
     type: String, 

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,27 +35,49 @@ const ForgotPassword: React.FC = () => {
     }
   };
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
-    <div className="container">
-      <h2>🔐 Réinitialisation du mot de passe</h2>
-      <p>Entrez votre adresse e-mail pour recevoir un lien de réinitialisation.</p>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <input
-            type="email"
-            className="form-control"
-            placeholder="Votre email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
-        <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? "Envoi en cours..." : "Envoyer"}
+    <div className="container d-flex justify-content-center mt-5">
+      <div className="card shadow p-4" style={{ maxWidth: "400px", width: "100%" }}>
+        <h2 className="text-center mb-3">🔐 Réinitialisation du mot de passe</h2>
+        <p className="text-center text-muted">
+          Entrez votre adresse e-mail pour recevoir un lien de réinitialisation.
+        </p>
+
+        {message && (
+          <div 
+            className="alert text-white text-center" 
+            style={{ backgroundColor: message.startsWith("✅") ? "#4CAF50" : "#e91e63" }}
+            role="alert"
+          >
+            {message}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Votre email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={loading}
+            />
+          </div>
+          <button type="submit" className="btn w-100 text-white" style={{ backgroundColor: "#e91e63" }} disabled={loading}>
+            {loading ? "Envoi en cours..." : "Envoyer"}
+          </button>
+        </form>
+
+        <button className="btn btn-secondary mt-3 w-100" onClick={handleGoBack}>
+          Retour
         </button>
-      </form>
-      {message && <p className="mt-3">{message}</p>}
+      </div>
     </div>
   );
 };

@@ -18,7 +18,7 @@ const createTransporter = (email: string) => {
       port: Number(process.env.EMAIL_PORT_HOTMAIL),
       secure: process.env.EMAIL_SECURE_HOTMAIL === "false",
       auth: { user: process.env.EMAIL_USER_HOTMAIL, pass: process.env.EMAIL_PASS_HOTMAIL },
-      tls: { ciphers: "SSLv3" },
+      tls: {  rejectUnauthorized: false },
     };
   } else if (email.endsWith("@gmail.com")) {
     transporterConfig = {
