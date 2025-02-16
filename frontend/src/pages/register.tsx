@@ -8,6 +8,7 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
@@ -15,8 +16,17 @@ const Register = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await auth?.register(firstName, lastName, username, email, password);
-      navigate("/login"); 
+      const response= (await auth?.register(firstName, lastName, username, email, password)) 
+      
+      if (response?.message) {
+        setSuccessMessage("Votre compte a été crée avec succès !");
+        setTimeout(() => {
+          navigate("/login"); 
+        }, 4500);
+      } else {
+        setSuccessMessage("Une erreur est survenue. Veuillez réessayer !");
+      }
+      
     } catch (error) {
       alert("Erreur d'inscription !");
       console.error("Erreur lors de l'inscription :", error);
@@ -29,6 +39,21 @@ const Register = () => {
 
   return (
     <div>
+    {successMessage && (
+ <div 
+ style={{
+   backgroundColor: "#e91e63",
+   color: "white",
+   padding: "10px",
+   borderRadius: "5px",
+   textAlign: "center",
+   fontWeight: "bold",
+   marginBottom: "15px"
+ }}
+ role="alert"
+>       {successMessage}
+          </div>
+            )}
       <h2>Inscription</h2>
       <form onSubmit={handleRegister}>
         <input 

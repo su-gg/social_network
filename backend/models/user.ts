@@ -28,7 +28,7 @@ const UserSchema = new Schema<IUser>({
     enum: ["firstName", "lastName", "fullName", "username"], 
     default: "fullName" 
   },
-  isProfilePublic: { type: Boolean, required: true },
+  isProfilePublic: { type: Boolean, default: true },
   resetPasswordToken: { type: String, default: null },  
   resetPasswordExpires: { type: Date, default: null },  
 }, 

@@ -23,7 +23,7 @@ export const register = async (req: any, res: any) => {
     };
 
     //await transporter.sendMail(mailOptions);
-    res.status(201).json({ message: "Utilisateur créé et email envoyé !" });
+    res.status(201).json({ message: "Utilisateur créé avec succès et email envoyé !" });
   } catch (error) {
     console.error("❌ Erreur lors de l'inscription :", error);
     res.status(500).json({ error: "Erreur lors de l'inscription" });

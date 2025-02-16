@@ -20,11 +20,15 @@ interface Post {
   photoUrl?: string;
 }
 
+interface RegisterResponse {
+  message: string;
+}
+
 interface AuthContextType {
   user: User | null;
   posts: Post[];
   login: (email: string, password: string) => Promise<void>;
-  register: (firstName: string, lastName: string, username: string, email: string, password: string) => Promise<void>; // ✅ Correction
+  register: (firstName: string, lastName: string, username: string, email: string, password: string) => Promise<RegisterResponse>;
   logout: () => void;
 }
 
@@ -130,7 +134,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const register = async (firstName: string, lastName: string, username: string, email: string, password: string) => {
+  const register = async (firstName: string, lastName: string, username: string, email: string, password: string) : Promise<RegisterResponse> => {
     try {
       const response = await fetch(`${API_URL}/register`, {
         method: "POST",
@@ -140,13 +144,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         credentials: "include",
         body: JSON.stringify({ firstName, lastName, username, email, password }),
       });
-
       if (!response.ok) throw new Error("Erreur lors de l'inscription");
 
-      navigate("/login");
+      const data = await response.json();
+
+      return data;
+
     } catch (error) {
       console.error("Erreur d'inscription :", error);
-      alert("Erreur d'inscription. Veuillez essayer à nouveau.");
+
+      return{ message:"erreur d'inscription, veuillez réessayer"}
     }
   };
 
