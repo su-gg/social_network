@@ -22,6 +22,7 @@ interface Post {
 
 interface RegisterResponse {
   message: string;
+  errors?: { field: string; message: string }[];
 }
 
 interface AuthContextType {
@@ -43,9 +44,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     console.log("Déconnexion...");
     localStorage.removeItem("token");
+    navigate("/");
     setUser(null);
     setPosts([]);
-    navigate("/home");
+    
   };
 
   const fetchPosts = async () => {
@@ -134,28 +136,46 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const register = async (firstName: string, lastName: string, username: string, email: string, password: string) : Promise<RegisterResponse> => {
+  const register = async (
+    firstName: string,
+    lastName: string,
+    username: string,
+    email: string,
+    password: string
+  ): Promise<RegisterResponse> => {
     try {
       const response = await fetch(`${API_URL}/register`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstName, lastName, username, email, password }),
       });
-      if (!response.ok) throw new Error("Erreur lors de l'inscription");
-
+  
       const data = await response.json();
-
-      return data;
-
+      console.log("📌 Réponse API brute :", data); // Debugging
+  
+      if (!response.ok) {
+        console.error("❌ Échec de l'inscription :", data);
+  
+        return {
+          message: "Registration failed",
+          errors: data.errors || [{ field: "global", message: data.message || "Unknown error" }],
+        };
+      }
+  
+      return {
+        message: data.message || "Registration successful",
+      };
     } catch (error) {
-      console.error("Erreur d'inscription :", error);
-
-      return{ message:"erreur d'inscription, veuillez réessayer"}
+      console.error("❌ Erreur réseau :", error);
+      return {
+        message: "Network error, please try again later.",
+        errors: [{ field: "global", message: "Server connection failed" }],
+      };
     }
   };
+  
+  
+  
 
   return (
     <AuthContext.Provider value={{ user, posts, login, register, logout }}>

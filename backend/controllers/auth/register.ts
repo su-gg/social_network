@@ -5,6 +5,21 @@ export const register = async (req: any, res: any) => {
   try {
     const { firstName, lastName, username, email, password } = req.body;
 
+    const existingUser = await User.findOne({ 
+      $or: [{ username }, { email }] 
+    });
+    if (existingUser) {
+      const errors = [];
+
+      if (existingUser.email === email) {
+        errors.push({ field: "email", message: "Email already used" });
+      }
+      if (existingUser.username === username) {
+        errors.push({ field: "username", message: "Username already used" });
+      }
+      return res.status(400).json({ errors });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ firstName, lastName, username, email, password: hashedPassword });
 
