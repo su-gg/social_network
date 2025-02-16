@@ -181,7 +181,7 @@ const FriendsContent: React.FC = () => {
       ) : (
         <ul className="list-group">
           {friendRequests.map((request) => (
-            <li className="list-group-item d-flex justify-content-between" key={request._id}>
+            <li className="list-group-item d-flex justify-content-between" key={`request-${request._id}`}>
               <div>{request.sender.firstName} {request.sender.lastName} ({request.sender.username})</div>
               <div>
                 <button className="btn btn-success btn-sm me-2" onClick={() => handleRespondToRequest(request._id, "accept")}>Accepter</button>
@@ -198,7 +198,7 @@ const FriendsContent: React.FC = () => {
       ) : (
         <ul className="list-group">
           {friends.map((friend) => (
-            <li className="list-group-item d-flex justify-content-between" key={friend._id}>
+            <li className="list-group-item d-flex justify-content-between" key={`friend-${friend._id}`}>
               <div>{friend.statusVisibility === "fullname" ? `${friend.firstName} ${friend.lastName}` : `@${friend.username}`}</div>
               <button className="btn btn-danger btn-sm" onClick={() => handleRemoveFriend(friend._id)}>Supprimer</button>
             </li>

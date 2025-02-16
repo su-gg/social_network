@@ -7,6 +7,7 @@ import { Server } from "socket.io";
 import authRoutes from "./routes/authRoutes";
 import postRoutes from "./routes/posts";
 import { authenticateToken } from "./middleware/authMiddleware";
+import messageRoutes from "./routes/messages"
 
 dotenv.config();
 
@@ -19,16 +20,19 @@ const corsOptions = {
   credentials: true,
 };
 
+const onlineUsers = new Map<string, string>(); 
+
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Routes
 app.use("/api/auth", authRoutes);
 console.log("✅ Route /api/auth chargée !");
 app.use("/api/auth/posts", authenticateToken, postRoutes);
 console.log("✅ Route /api/posts chargée !");
 app.use("/api/auth/friends", authenticateToken, authRoutes);
 console.log("✅ Route /api/auth/friends chargée !");
+app.use("/api/messages", messageRoutes);
+
 
 const server = createServer(app);
 
@@ -43,18 +47,39 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("✅ Un utilisateur s'est connecté via WebSocket :", socket.id);
 
-  socket.on("join", (userId) => {
-    socket.join(userId);
-    console.log(`📌 L'utilisateur ${userId} a rejoint sa room personnelle`);
+  socket.on("userConnected", (userId) => {
+    if (!userId) {
+      console.warn("⚠️ Tentative de connexion avec un userId null !");
+      return;
+    }
+
+    onlineUsers.set(userId, socket.id);
+    console.log(`📌 Utilisateur en ligne : ${userId} | Socket ID: ${socket.id}`);
+    console.log("👥 Utilisateurs en ligne :", [...onlineUsers.keys()]);
+
+
+    const onlineFriends = Array.from(onlineUsers.values());
+    io.emit("onlineFriends", onlineFriends);
+  });
+
+  socket.on("userDisconnected", (userId) => {
+    onlineUsers.delete(userId);
+    console.log(`❌ Utilisateur déconnecté : ${userId}`);
+    io.emit("onlineUsers", [...onlineUsers.keys()]);
+  });
+
+  socket.on("disconnect", () => {
+    const userId = [...onlineUsers.entries()].find(([_, id]) => id === socket.id)?.[0];
+    if (userId) {
+      onlineUsers.delete(userId);
+      console.log(`🔴 Utilisateur ${userId} déconnecté`);
+      io.emit("onlineUsers", [...onlineUsers.keys()]);
+    }
   });
 
   socket.on("message", (data) => {
     console.log("📩 Message reçu :", data);
     io.emit("message", data);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("❌ Un utilisateur s'est déconnecté");
   });
 });
 
