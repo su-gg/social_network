@@ -1,6 +1,8 @@
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3010", {
+const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com/api/auth";
+
+const socket = io(API_URL, {
   transports: ["websocket"],
   withCredentials: true,
 });

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
+
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -13,7 +15,7 @@ const ForgotPassword: React.FC = () => {
     setMessage("");
 
     try {
-      const response = await fetch("http://localhost:3010/api/auth/forgot-password", {
+      const response = await fetch(`${API_URL}/api/auth/forgot-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

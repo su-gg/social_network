@@ -8,11 +8,12 @@ const AdminContent: React.FC = () => {
   const [birthDate, setBirthDate] = useState<string>("");
   const [gender, setGender] = useState<string>("Homme");
   const [displayNameType, setDisplayNameType] = useState<"firstName" | "lastName" | "fullName" | "username">("fullName");
+  const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://localhost:3010/api/auth/me", {
+        const response = await fetch(`${API_URL}/api/auth/me`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
     
@@ -49,7 +50,7 @@ const AdminContent: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      const response = await fetch("http://localhost:3010/api/auth/updateProfile", {
+      const response = await fetch(`${API_URL}/api/auth/updateProfile`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

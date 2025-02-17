@@ -2,13 +2,15 @@ import React, { useState, useEffect, useContext, useMemo } from "react";
 import { io } from "socket.io-client";
 import { AuthContext } from "../context/AuthContext";
 
+const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com/api/auth";
+
 interface User {
   id: string;
   username: string;
   friends: User[];
 }
 
-const socket = io("http://localhost:3010", {
+const socket = io(API_URL, {
   withCredentials: true,
   transports: ["websocket"],
   autoConnect: false, // 🔥 Empêche les connexions multiples au chargement
