@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 
-//const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
-const API_URL = "http://localhost:3010";
+const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
+//const API_URL = "http://localhost:3010";
 
 const socket = io(API_URL, {
   transports: ["websocket"],

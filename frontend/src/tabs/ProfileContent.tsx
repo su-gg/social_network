@@ -7,8 +7,8 @@ interface Post {
   photoUrl?: string;
 }
 
-const API_URL = "http://localhost:3010/api/auth";
-//const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3010/api/auth";
+//const API_URL = "http://localhost:3010/api/auth";
+const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com/api/auth";
 
 
 const ProfileContent: React.FC = () => {
@@ -27,7 +27,7 @@ const ProfileContent: React.FC = () => {
       }
       console.log("token  :  " + token);
 
-      const response = await fetch("http://localhost:3010/api/auth/me", {
+      const response = await fetch(`${API_URL}/me`, {
           method: "GET",
         headers: {
           "Content-Type": "application/json",

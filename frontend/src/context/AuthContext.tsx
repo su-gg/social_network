@@ -3,9 +3,9 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate, useLocation } from "react-router-dom";
 import socket from "../socket"; // WebSocket
 
-const API_URL = "http://localhost:3010/api/auth";
-//const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com/api/auth";
-console.log("API_URL utilisé coucou Su:", API_URL);
+//const API_URL = "http://localhost:3010/api/auth";
+const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com/api/auth";
+console.log("API_URL utilisé coucou Su 1:", API_URL);
 
 
 interface User {

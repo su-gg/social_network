@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext, useMemo } from "react";
 import { io } from "socket.io-client";
 import { AuthContext } from "../context/AuthContext";
 
-//const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
-const API_URL = "http://localhost:3010";
+const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
+//const API_URL = "http://localhost:3010";
 
 interface User {
   id: string;
