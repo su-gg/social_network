@@ -31,6 +31,7 @@ app.get("*", (_, res) => {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
 app.use("/api/auth", authRoutes);
 console.log("✅ Route /api/auth chargée !");

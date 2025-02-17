@@ -8,7 +8,7 @@ interface Post {
 }
 
 //const API_URL = "http://localhost:3010/api/auth";
-const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com/api/auth";
+const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
 
 
 const ProfileContent: React.FC = () => {
@@ -27,7 +27,7 @@ const ProfileContent: React.FC = () => {
       }
       console.log("token  :  " + token);
 
-      const response = await fetch(`${API_URL}/me`, {
+      const response = await fetch(`${API_URL}/api/auth/me`, {
           method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +49,7 @@ const ProfileContent: React.FC = () => {
   const fetchPosts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/posts`, {
+      const response = await fetch(`${API_URL}/api/auth/posts`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -69,7 +69,7 @@ const ProfileContent: React.FC = () => {
   const createPost = async (post: any) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/posts`, {
+      const response = await fetch(`${API_URL}/api/auth/posts`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -90,7 +90,7 @@ const ProfileContent: React.FC = () => {
   const deletePost = async (postId: string) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/posts/${postId}`, {
+      const response = await fetch(`${API_URL}/api/auth/posts/${postId}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`,
