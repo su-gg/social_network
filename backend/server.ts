@@ -83,7 +83,7 @@ io.on("connection", (socket) => {
   });
 });
 
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = process.env.MONGO_PROD;
 if (!MONGO_URI) {
   console.error("❌ Erreur : MONGO_URI n'est pas défini dans le fichier .env");
   process.exit(1);
