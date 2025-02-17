@@ -1,16 +1,22 @@
-# Social media on react
+# Social media on react - Beyond Words
 
-This project is under construction
-## Available Scripts
-
-In the project directory, you can run:
-
+After cloning the repo, you can run :
 `npm install` 
-create the doc :  .env (same level as package.json) and add PORT=4000
-`npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:4000](http://localhost:4000) to view it in your browser.
+To push your modifications online (Heroku) :
+`⁠ cd frontend ⁠`
+`⁠ npm run build ⁠`
 
-# social_network git init git add README.md git commit -m first commit git branch -M main git remote add origin https://github.com/su-gg/social_network.git git push -u origin main
-# social_network git init git add README.md git commit -m first commit git branch -M main git remote add origin https://github.com/su-gg/social_network.git git push -u origin main
+Once the build is clean :
+`⁠ cd ..⁠`
+⁠ `git add . ` ⁠or the modifications you want
+`⁠ git commit 'm "your message" ⁠`
+`⁠ git push heroku online:main ⁠`
+
+The website is actually online through this link : 
+`https://prod-beyondwords-04dd84f0b17e.herokuapp.com/`
+
+Feel free to signup and login to your account and discover the Beyonders Community
+
+
+
