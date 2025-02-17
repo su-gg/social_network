@@ -8,9 +8,8 @@ const AdminContent: React.FC = () => {
   const [birthDate, setBirthDate] = useState<string>("");
   const [gender, setGender] = useState<string>("Homme");
   const [displayNameType, setDisplayNameType] = useState<"firstName" | "lastName" | "fullName" | "username">("fullName");
-  //const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
-  const API_URL = "http://localhost:3010";
-  
+  const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
