@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "main": "server.ts",
   "scripts": {
-    "start:frontend": "cd ../frontend && npm start",
-    "start:backend": "node -r ts-node/register ../backend/server.ts",
-    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
   },
   "keywords": [],
   "author": "",

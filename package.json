@@ -1,0 +1,46 @@
+{
+  "name": "rs",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
+    "cra-template": "1.2.0",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.5",
+    "react-scripts": "^5.0.1",
+    "uuid": "^11.0.5"
+  },
+  "scripts": {
+    "postinstall": "npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "node -r ts-node/register backend/server.ts"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/http-proxy-middleware": "^0.19.3",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "ts-node": "^10.9.2"
+  }
+}

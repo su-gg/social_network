@@ -8,6 +8,7 @@ import authRoutes from "./routes/authRoutes";
 import postRoutes from "./routes/posts";
 import { authenticateToken } from "./middleware/authMiddleware";
 import messageRoutes from "./routes/messages"
+import path from "path";
 
 dotenv.config();
 
@@ -21,6 +22,12 @@ const corsOptions = {
 };
 
 const onlineUsers = new Map<string, string>(); 
+
+// Sert le front en static
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+app.get("*", (_, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+});
 
 app.use(cors(corsOptions));
 app.use(express.json());
