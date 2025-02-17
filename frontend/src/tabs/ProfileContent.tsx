@@ -7,7 +7,9 @@ interface Post {
   photoUrl?: string;
 }
 
-const API_URL = "http://localhost:3010/api/auth";
+//const API_URL = "http://localhost:3010/api/auth";
+const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com/api/auth";
+
 
 const ProfileContent: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -20,7 +22,7 @@ const ProfileContent: React.FC = () => {
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/me`, {
+      const response = await fetch("https://prod-beyondwords-04dd84f0b17e.herokuapp.com/me", {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
