@@ -22,7 +22,7 @@ const ProfileContent: React.FC = () => {
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("https://prod-beyondwords-04dd84f0b17e.herokuapp.com/me", {
+      const response = await fetch("https://prod-beyondwords-04dd84f0b17e.herokuapp.com/api/auth/me", {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
