@@ -151,7 +151,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Inscription
   const register = async (firstName: string, lastName: string, username: string, email: string, password: string) => {
     try {
-      const response = await fetch(`${API_URL}api/auth/register`, {
+      const response = await fetch(`${API_URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstName, lastName, username, email, password }),
