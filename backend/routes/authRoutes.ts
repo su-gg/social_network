@@ -76,7 +76,7 @@ router.post("/forgot-password", async (req, res) => {
       to: user.email,
       from: process.env.EMAIL_USER,
       subject: "Réinitialisation de votre mot de passe",
-      text: `Cliquez sur ce lien pour réinitialiser votre mot de passe : http://localhost:3000/reset-password/${resetToken}`,
+      text: `Cliquez sur ce lien pour réinitialiser votre mot de passe : https://prod-beyondwords-04dd84f0b17e.herokuapp.com/reset-password/${resetToken}`,
     };
 
     await transporter.sendMail(mailOptions);
