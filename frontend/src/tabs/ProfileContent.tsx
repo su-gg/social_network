@@ -18,6 +18,7 @@ const ProfileContent: React.FC = () => {
   const [userFirstName, setUserFirstName] = useState<string>("");
  
 
+  console.log("Api url utilisée : " , `${API_URL}/me`);
 
   const fetchUserData = async () => {
     try {
@@ -25,7 +26,7 @@ const ProfileContent: React.FC = () => {
       if (!token) {
         throw new Error("Token is missing");
       }
-      console.log("token  :  " + token);
+      console.log("token :  " + token);
 
       const response = await fetch(`${API_URL}/api/auth/me`, {
           method: "GET",
