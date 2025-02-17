@@ -22,17 +22,23 @@ const ProfileContent: React.FC = () => {
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/me`, {
-        method: "GET",
+      if (!token) {
+        throw new Error("Token is missing");
+      }
+      console.log("token  :  " + token);
+
+      const response = await fetch("http://localhost:3010/api/auth/me", {
+          method: "GET",
         headers: {
-          "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
       });
 
       if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
 
       const data = await response.json();
+      console.log("data user : " + data);
       setUserFirstName(data.firstName);
     } catch (error) {
       console.error("Erreur lors de la récupération des informations utilisateur :", error);

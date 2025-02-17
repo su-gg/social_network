@@ -5,7 +5,7 @@ import socket from "../socket"; // WebSocket
 
 const API_URL = "http://localhost:3010/api/auth";
 //const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com/api/auth";
-console.log("API_URL utilisé coucou 3:", API_URL);
+console.log("API_URL utilisé coucou Su:", API_URL);
 
 
 interface User {
@@ -134,6 +134,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!response.ok) throw new Error("Erreur lors de la connexion");
 
       const data = await response.json();
+      console.error("response.json()  :", response.json());
+
       localStorage.setItem("token", data.token);
       setUser(data.user);
       navigate("/profile");
