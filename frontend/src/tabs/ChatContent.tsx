@@ -3,6 +3,7 @@ import { io } from "socket.io-client";
 import { AuthContext } from "../context/AuthContext";
 
 const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
+//const API_URL = "http://localhost:3010";
 
 interface User {
   id: string;
@@ -13,23 +14,47 @@ interface User {
 const socket = io(API_URL, {
   withCredentials: true,
   transports: ["websocket"],
-  autoConnect: false,
+  autoConnect: false, // 🔥 Empêche les connexions multiples au chargement
 });
 
 const ChatContent: React.FC = () => {
   const authContext = useContext(AuthContext);
   const user = authContext?.user as User | null;
 
-  const friends = useMemo(() => user?.friends || [], [user?.friends]);
+  const [friends, setFriends] = useState<User[]>([]); // 🔥 Stocke les amis récupérés
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
   const [onlineFriends, setOnlineFriends] = useState<User[]>([]);
 
   useEffect(() => {
+    if (!user) return;
+
+    const fetchFriends = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/auth/friends`, {
+          method: "GET",
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          throw new Error("Erreur lors de la récupération des amis");
+        }
+
+        const data = await response.json();
+        console.log("✅ Liste des amis chargée :", data.friends);
+        setFriends(data.friends);
+      } catch (error) {
+        console.error("❌ Erreur lors du chargement des amis :", error);
+      }
+    };
+
+    fetchFriends();
+  }, [user]);
+
+  useEffect(() => {
     if (!user || socket.connected) return;
 
     console.log("🟡 Connexion WebSocket avec user :", user);
-
     socket.connect();
 
     socket.on("connect", () => {
@@ -51,14 +76,9 @@ const ChatContent: React.FC = () => {
     console.log("👤 Utilisateur connecté :", user);
 
     const handleOnlineUsers = (onlineUsers: string[]) => {
-      console.log("👥 Liste des amis de l'utilisateur :", user.friends);
+      console.log("👥 Liste des amis de l'utilisateur :", friends);
 
-      const onlineFriendsList: User[] = (user.friends || [])
-        .filter(friend => onlineUsers.includes(friend.id))
-        .map(friend => ({
-          ...friend,
-          friends: [], // 🔥 Correction : Assure que la structure User est respectée
-        }));
+      const onlineFriendsList = friends.filter(friend => onlineUsers.includes(friend.id));
 
       console.log("✅ Amis en ligne après filtrage :", onlineFriendsList);
       setOnlineFriends(onlineFriendsList);
@@ -74,9 +94,8 @@ const ChatContent: React.FC = () => {
     if (!user) return;
 
     const handleMessage = (data: { sender: string; text: string }) => {
-      const senderObj = friends.find(f => f.id === data.sender);
-      const senderName = senderObj ? senderObj.username : "Ami";
-
+      const senderName = friends.find(f => f.id === data.sender)?.username || "Ami";
+      
       setMessages(prev => [...prev, `${data.sender === user.id ? "Moi" : senderName}: ${data.text}`]);
     };
 

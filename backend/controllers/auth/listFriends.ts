@@ -4,7 +4,7 @@ export const listFriends = async (req: any, res: any) => {
   const userId = req.user._id;
 
   try {
-    const user = await User.findById(userId).populate("friends", "username firstName lastName");
+    const user = await User.findById(userId).populate("friends", "id username firstName lastName");
     if (!user) {
       return res.status(404).json({ message: "Utilisateur non trouvé." });
     }
