@@ -1,5 +1,6 @@
 import express from "express";
 import Message from "../models/messages";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -7,10 +8,13 @@ router.get("/:userId/:friendId", async (req, res) => {
   try {
     const { userId, friendId } = req.params;
 
+    const userObjectId = new mongoose.Types.ObjectId(userId);
+    const friendObjectId = new mongoose.Types.ObjectId(friendId);
+
     const messages = await Message.find({
       $or: [
-        { sender: userId, receiver: friendId },
-        { sender: friendId, receiver: userId },
+        { sender: userObjectId, receiver: friendObjectId },
+        { sender: friendObjectId, receiver: userObjectId },
       ],
     }).sort({ timestamp: 1 });
 
@@ -33,6 +37,7 @@ router.post("/", async (req, res) => {
 
     res.status(201).json(message);
   } catch (err) {
+    console.error("Erreur envoi message:", err);
     res.status(500).json({ error: "Erreur lors de l'envoi du message" });
   }
 });

@@ -3,7 +3,6 @@ import { io } from "socket.io-client";
 import { AuthContext } from "../context/AuthContext";
 
 const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
-//const API_URL = "http://localhost:3010";
 
 interface User {
   id: string;
@@ -14,7 +13,7 @@ interface User {
 const socket = io(API_URL, {
   withCredentials: true,
   transports: ["websocket"],
-  autoConnect: false, // 🔥 Empêche les connexions multiples au chargement
+  autoConnect: false,
 });
 
 const ChatContent: React.FC = () => {
@@ -27,11 +26,11 @@ const ChatContent: React.FC = () => {
   const [onlineFriends, setOnlineFriends] = useState<User[]>([]);
 
   useEffect(() => {
-    if (!user || socket.connected) return; // 🔥 Empêche les multiples connexions
+    if (!user || socket.connected) return;
 
     console.log("🟡 Connexion WebSocket avec user :", user);
 
-    socket.connect(); // 🔥 Se connecter uniquement si ce n'est pas déjà fait
+    socket.connect();
 
     socket.on("connect", () => {
       console.log("✅ Connecté au WebSocket avec ID :", socket.id);
@@ -51,19 +50,19 @@ const ChatContent: React.FC = () => {
     if (!user) return;
     console.log("👤 Utilisateur connecté :", user);
 
-
     const handleOnlineUsers = (onlineUsers: string[]) => {
-      console.log("🔍 Utilisateur connecté :", user);
       console.log("👥 Liste des amis de l'utilisateur :", user.friends);
 
-      const onlineFriendsList = (user.friends || []).filter(friend => {
-        console.log(`🔍 Vérification: ami ${friend.id} est-il en ligne?`, onlineUsers.includes(friend.id));
-        return onlineUsers.includes(friend.id);
-    });
+      const onlineFriendsList: User[] = (user.friends || [])
+        .filter(friend => onlineUsers.includes(friend.id))
+        .map(friend => ({
+          ...friend,
+          friends: [], // 🔥 Correction : Assure que la structure User est respectée
+        }));
 
-    console.log("✅ Amis en ligne après filtrage :", onlineFriendsList);
-    setOnlineFriends(onlineFriendsList);
-  };
+      console.log("✅ Amis en ligne après filtrage :", onlineFriendsList);
+      setOnlineFriends(onlineFriendsList);
+    };
 
     socket.on("onlineUsers", handleOnlineUsers);
     return () => {
@@ -75,9 +74,10 @@ const ChatContent: React.FC = () => {
     if (!user) return;
 
     const handleMessage = (data: { sender: string; text: string }) => {
-      const senderName = friends.find(f => f.id === data.sender) || "Friend";
-      
-      setMessages(prev => [...prev, `${data.sender === user.id ? "Me" : senderName}: ${data.text}`]);
+      const senderObj = friends.find(f => f.id === data.sender);
+      const senderName = senderObj ? senderObj.username : "Ami";
+
+      setMessages(prev => [...prev, `${data.sender === user.id ? "Moi" : senderName}: ${data.text}`]);
     };
 
     socket.on("message", handleMessage);
