@@ -90,14 +90,14 @@ io.on("connection", (socket) => {
   });
 });
 
-const MONGO_URI = process.env.MONGO_PROD;
-if (!MONGO_URI) {
-  console.error("❌ Erreur : MONGO_URI n'est pas défini dans le fichier .env");
+const MONGO_PROD = process.env.MONGO_PROD;
+if (!MONGO_PROD) {
+  console.error("❌ Erreur : MONGO_PROD n'est pas défini dans le fichier .env");
   process.exit(1);
 }
 
 mongoose
-  .connect(MONGO_URI)
+  .connect(MONGO_PROD)
   .then(() => console.log("✅ MongoDB connecté avec succès"))
   .catch((err) => {
     console.error("❌ Erreur de connexion à MongoDB :", err);
