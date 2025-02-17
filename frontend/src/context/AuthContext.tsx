@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import socket from "../socket"; // WebSocket
 
 //const API_URL = "http://localhost:3010/api/auth";
-const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com/api/auth";
+const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
 console.log("API_URL utilisé coucou Su 2:", API_URL);
 
 
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const fetchFriends = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/listFriend`, {
+      const response = await fetch(`${API_URL}api/auth/listFriend`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       try {
         const decodedUser: any = jwtDecode(token);
-        const response = await fetch(`${API_URL}/me`, {
+        const response = await fetch(`${API_URL}/api/auth/me`, {
           method: "GET",
           headers: { "Authorization": `Bearer ${token}` },
         });
@@ -124,7 +124,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Connexion
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch(`${API_URL}/login`, {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -151,7 +151,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Inscription
   const register = async (firstName: string, lastName: string, username: string, email: string, password: string) => {
     try {
-      const response = await fetch(`${API_URL}/register`, {
+      const response = await fetch(`${API_URL}api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstName, lastName, username, email, password }),
@@ -171,7 +171,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const sendFriendRequest = async (friendUsername: string) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/sendFriendRequest`, {
+      const response = await fetch(`${API_URL}/api/auth/sendFriendRequest`, {
         method: "POST",
         headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
         body: JSON.stringify({ friendUsername }),
@@ -189,7 +189,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const respondToFriendRequest = async (requestId: string, action: "accept" | "decline") => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/respondToFriendRequest`, {
+      const response = await fetch(`${API_URL}/api/auth/respondToFriendRequest`, {
         method: "POST",
         headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
         body: JSON.stringify({ requestId, action }),

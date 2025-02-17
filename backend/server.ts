@@ -23,11 +23,7 @@ const corsOptions = {
 
 const onlineUsers = new Map<string, string>(); 
 
-// Sert le front en static
-app.use(express.static(path.join(__dirname, "../frontend/build")));
-app.get("*", (_, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-});
+
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -41,6 +37,11 @@ app.use("/api/auth/friends", authenticateToken, authRoutes);
 console.log("✅ Route /api/auth/friends chargée !");
 app.use("/api/messages", messageRoutes);
 
+// Sert le front en static
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+app.get("*", (_, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+});
 
 const server = createServer(app);
 
