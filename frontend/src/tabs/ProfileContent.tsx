@@ -7,8 +7,8 @@ interface Post {
   photoUrl?: string;
 }
 
-//const API_URL = "http://localhost:3010/api/auth";
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3010/api/auth";
+const API_URL = "http://localhost:3010/api/auth";
+//const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3010/api/auth";
 
 
 const ProfileContent: React.FC = () => {

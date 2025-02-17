@@ -42,5 +42,6 @@
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "ts-node": "^10.9.2"
-  }
+  },
+  "proxy": "https://prod-beyondwords-04dd84f0b17e.herokuapp.com"
 }

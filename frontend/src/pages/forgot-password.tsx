@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
+//const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
+const API_URL = "http://localhost:3010";
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");

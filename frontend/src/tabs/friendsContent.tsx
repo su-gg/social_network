@@ -27,8 +27,8 @@ const FriendsContent: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [message, setMessage] = useState<string>("");
 
-  //const API_URL_LOCAL = "http://localhost:3010/api/auth";
-  const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com/api/auth";
+  const API_URL = "http://localhost:3010/api/auth";
+  //const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com/api/auth";
 
   useEffect(() => {
     const fetchFriends = async () => {
