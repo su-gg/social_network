@@ -157,8 +157,8 @@ const FriendsContent: React.FC = () => {
   };
 
   return (
-    <div className="card p-4 shadow-lg" style={{ borderColor: "#e91e63" }}>
-      <h2 className="text-center" style={{ color: "#e91e63" }}>Amis</h2>
+    <div className="card p-4 shadow-lg" style={{ borderColor: "#e6a4b4" }}>
+      <h2 className="text-center" style={{ color: "#e6a4b4" }}>Amis</h2>
       {message && <p className="text-success">{message}</p>}
       {error && <p className="text-danger">{error}</p>}
 
@@ -172,7 +172,7 @@ const FriendsContent: React.FC = () => {
             value={friendUsername}
             onChange={(e) => setFriendUsername(e.target.value)}
           />
-          <button className="btn" style={{ backgroundColor: "#e91e63", color: "white" }} onClick={() => handleAddFriend(friendUsername)}>Ajouter</button>
+          <button className="btn" style={{ backgroundColor: "#e6a4b4", color: "white" }} onClick={() => handleAddFriend(friendUsername)}>Ajouter</button>
         </div>
       </div>
 

@@ -10,7 +10,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ activeTab, setActiveTab, children }) => {
   return (
     <div className="container-fluid mt-4">
-      <h1 className="text-center" style={{ color: '#e91e63' }}> Beyonders </h1>
+      <h1 className="text-center" style={{ color: '#e6a4b4' }}> Beyonders </h1>
       <div className="row">
         <div className="col-md-3 d-flex flex-column" style={{ minHeight: '100vh' }}>
           <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />

@@ -116,7 +116,7 @@ const Register = () => {
               required 
             />
           </div>
-          <button type="submit" className="btn text-white w-100" style={{ backgroundColor: "#e91e63" }}>
+          <button type="submit" className="btn text-white w-100" style={{ backgroundColor: "#e6a4b4" }}>
             Sign up
           </button>
         </form>
