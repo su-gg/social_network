@@ -123,9 +123,9 @@ const ProfileContent: React.FC = () => {
     <div className="card p-4 shadow-lg" style={{ backgroundColor: '#ffebee' }}>
       <h2 className="text-center" style={{ color: '#d81b60' }}>Welcome {userFirstName ? capitalizeFirstLetter(userFirstName) : "User"} 👋</h2>
       <form onSubmit={handlePostSubmit} className="mb-3">
-        <textarea className="form-control mb-2" value={postMessage} onChange={(e) => setPostMessage(e.target.value)} placeholder="Tap your message..." rows={3} style={{ borderColor: '#e91e63' }} />
-        <input type="text" className="form-control mb-2" value={postPhoto} onChange={(e) => setPostPhoto(e.target.value)} placeholder="Photo URL (optional)" style={{ borderColor: '#e91e63' }} />
-        <button type="submit" className="btn w-100" style={{ backgroundColor: '#e91e63', color: 'white' }}>Post</button>
+        <textarea className="form-control mb-2" value={postMessage} onChange={(e) => setPostMessage(e.target.value)} placeholder="Tap your message..." rows={3} style={{ borderColor: '#e6a4b4' }} />
+        <input type="text" className="form-control mb-2" value={postPhoto} onChange={(e) => setPostPhoto(e.target.value)} placeholder="Photo URL (optional)" style={{ borderColor: '#e6a4b4' }} />
+        <button type="submit" className="btn w-100" style={{ backgroundColor: '#e6a4b4', color: 'white' }}>Post</button>
       </form>
       <h3>Posts</h3>
       {posts.length === 0 ? <p>No post.</p> : (
@@ -137,7 +137,7 @@ const ProfileContent: React.FC = () => {
               <button
                 className="btn btn-danger btn-sm mt-2"
                 onClick={() => deletePost(post._id)}  
-                style={{ backgroundColor: '#e91e63', color: 'white' }}
+                style={{ backgroundColor: '#e6a4b4', color: 'white' }}
               >
                 Delete
               </button>

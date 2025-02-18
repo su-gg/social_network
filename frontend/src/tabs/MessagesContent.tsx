@@ -12,8 +12,8 @@ const MessagesContent: React.FC = () => {
   };
 
   return (
-    <div className="card p-4 shadow-lg" style={{ borderColor: "#e91e63" }}>
-      <h2 className="text-center" style={{ color: "#e91e63" }}>Messagerie</h2>
+    <div className="card p-4 shadow-lg" style={{ borderColor: "#e6a4b4" }}>
+      <h2 className="text-center" style={{ color: "#e6a4b4" }}>Messagerie</h2>
       <form onSubmit={handleSendMessage} className="mb-3">
         <textarea
           className="form-control mb-2"
@@ -21,23 +21,23 @@ const MessagesContent: React.FC = () => {
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Écrivez un nouveau message..."
           rows={3}
-          style={{ borderColor: "#e91e63", backgroundColor: "#fce4ec", color: "#880e4f" }}
+          style={{ borderColor: "#e6a4b4", backgroundColor: "#fce4ec", color: "#880e4f" }}
         />
         <button
           type="submit"
           className="btn w-100"
-          style={{ backgroundColor: "#e91e63", color: "white" }}
+          style={{ backgroundColor: "#e6a4b4", color: "white" }}
         >
           Envoyer
         </button>
       </form>
-      <h3 className="text-center" style={{ color: "#e91e63" }}>Messages envoyés</h3>
+      <h3 className="text-center" style={{ color: "#e6a4b4" }}>Messages envoyés</h3>
       <ul className="list-group">
         {messages.map((msg, index) => (
           <li
             key={index}
             className="list-group-item"
-            style={{ backgroundColor: "#fce4ec", borderColor: "#e91e63", color: "#880e4f" }}
+            style={{ backgroundColor: "#fce4ec", borderColor: "#e6a4b4", color: "#880e4f" }}
           >
             {msg}
           </li>

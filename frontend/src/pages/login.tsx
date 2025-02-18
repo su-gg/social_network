@@ -47,7 +47,7 @@ const Login = () => {
               required
             />
           </div>
-          <button type="submit" className="btn w-100 text-white" style={{ backgroundColor: "#e91e63" }}>
+          <button type="submit" className="btn w-100 text-white" style={{ backgroundColor: "#e6a4b4" }}>
             Connexion
           </button>
         </form>

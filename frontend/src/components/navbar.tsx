@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "#e91e63" }}>
+    <nav className="navbar navbar-expand-lg" style={{ backgroundColor: '#e6a4b4' }}>
       <div className="container">
         <span
           className="navbar-brand text-white font-weight-bold"

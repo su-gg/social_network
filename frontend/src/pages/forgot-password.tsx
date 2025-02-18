@@ -50,7 +50,7 @@ const ForgotPassword: React.FC = () => {
         {message && (
           <div 
             className="alert text-white text-center" 
-            style={{ backgroundColor: message.startsWith("✅") ? "#4CAF50" : "#e91e63" }}
+            style={{ backgroundColor: message.startsWith("✅") ? "#4CAF50" : "#e6a4b4" }}
             role="alert"
           >
             {message}
@@ -69,7 +69,7 @@ const ForgotPassword: React.FC = () => {
               disabled={loading}
             />
           </div>
-          <button type="submit" className="btn w-100 text-white" style={{ backgroundColor: "#e91e63" }} disabled={loading}>
+          <button type="submit" className="btn w-100 text-white" style={{ backgroundColor: "#e6a4b4" }} disabled={loading}>
             {loading ? "Envoi en cours..." : "Envoyer"}
           </button>
         </form>

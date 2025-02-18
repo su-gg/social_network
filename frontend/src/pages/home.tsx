@@ -8,7 +8,7 @@ const Home: React.FC = () => {
       <p className="lead">Log in to connect with the community.</p>
       
       <div className="d-flex justify-content-center gap-3 mt-4">
-        <Link to="/login" className="btn text-white px-4" style={{ backgroundColor: "#e91e63" }}>
+        <Link to="/login" className="btn text-white px-4" style={{ backgroundColor: "#e6a4b4" }}>
           Login
         </Link>
         <Link to="/register" className="btn btn-outline-dark px-4">

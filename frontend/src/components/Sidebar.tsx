@@ -11,7 +11,7 @@ const Sidebar: React.FC<{ activeTab: string; setActiveTab: (tab: string) => void
           style={{
             borderRadius: '10px',
             marginBottom: '5px',
-            backgroundColor: activeTab === tab ? '#e91e63' : '#f8f9fa',
+            backgroundColor: activeTab === tab ? '#e6a4b4' : '#f8f9fa',
             border: 'none'
           }}
         >

@@ -92,19 +92,19 @@ const ChatContent: React.FC = () => {
   };
 
   return (
-    <div className="card p-4 shadow-lg" style={{ borderColor: "#e91e63" }}>
-      <h2 className="text-center" style={{ color: "#e91e63" }}>Espace Chat</h2>
+    <div className="card p-4 shadow-lg" style={{ borderColor: "#e6a4b4" }}>
+      <h2 className="text-center" style={{ color: "#e6a4b4" }}>Espace Chat</h2>
 
       <p className="text-muted text-center">Amis en ligne :</p>
       {onlineFriends.length > 0 ? (
         <ul className="list-group mb-3">
           {onlineFriends.map(friend => (
             <li key={friend.id} className="list-group-item d-flex justify-content-between align-items-center"
-                style={{ backgroundColor: "#fce4ec", borderColor: "#e91e63", color: "#880e4f" }}>
+                style={{ backgroundColor: "#fce4ec", borderColor: "#e6a4b4", color: "#880e4f" }}>
               {friend.username}
               <button
                 className="btn btn-sm"
-                style={{ backgroundColor: "#e91e63", color: "white" }}
+                style={{ backgroundColor: "#e6a4b4", color: "white" }}
                 onClick={() => alert(`Conversation lancée avec ${friend.username}`)}
               >
                 Démarrer conversation
@@ -132,7 +132,7 @@ const ChatContent: React.FC = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button className="btn" style={{ backgroundColor: "#e91e63", color: "white" }} onClick={sendMessage}>
+        <button className="btn" style={{ backgroundColor: "#e6a4b4", color: "white" }} onClick={sendMessage}>
           Envoyer
         </button>
       </div>

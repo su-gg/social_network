@@ -86,8 +86,8 @@ const AdminContent: React.FC = () => {
   };
 
   return (
-    <div className="card p-4 shadow-lg" style={{ borderColor: "#e91e63" }}>
-      <h2 className="text-center" style={{ color: "#e91e63" }}>Admin</h2>
+    <div className="card p-4 shadow-lg" style={{ borderColor: "#e6a4b4" }}>
+      <h2 className="text-center" style={{ color: "#e6a4b4" }}>Admin</h2>
 
       {/* Champs Nom, Prénom, Username */}
       <div className="mb-3">
@@ -135,7 +135,7 @@ const AdminContent: React.FC = () => {
       {/* Aperçu */}
       <div className="mb-4 p-3 border rounded text-center" style={{ backgroundColor: "#fce4ec" }}>
         <strong>Aperçu : </strong>
-        <span style={{ color: "#e91e63" }}>{getDisplayName()}</span>
+        <span style={{ color: "#e6a4b4" }}>{getDisplayName()}</span>
       </div>
 
       {/* Visibilité du profil */}
@@ -154,7 +154,7 @@ const AdminContent: React.FC = () => {
       </div>
 
       {/* Bouton Sauvegarder */}
-      <button className="btn mt-3" style={{ backgroundColor: "#e91e63", color: "white", fontWeight: "bold" }} onClick={handleSave}>
+      <button className="btn mt-3" style={{ backgroundColor: "#e6a4b4", color: "white", fontWeight: "bold" }} onClick={handleSave}>
         Sauvegarder
       </button>
     </div>
