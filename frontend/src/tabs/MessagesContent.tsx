@@ -19,7 +19,7 @@ const MessagesContent: React.FC = () => {
           className="form-control mb-2"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Écrivez un nouveau message..."
+          placeholder="Tap a new message..."
           rows={3}
           style={{ borderColor: "#e6a4b4", backgroundColor: "#fce4ec", color: "#880e4f" }}
         />
@@ -28,10 +28,10 @@ const MessagesContent: React.FC = () => {
           className="btn w-100"
           style={{ backgroundColor: "#e6a4b4", color: "white" }}
         >
-          Envoyer
+          Send
         </button>
       </form>
-      <h3 className="text-center" style={{ color: "#e6a4b4" }}>Messages envoyés</h3>
+      <h3 className="text-center" style={{ color: "#e6a4b4" }}>Sent messages</h3>
       <ul className="list-group">
         {messages.map((msg, index) => (
           <li

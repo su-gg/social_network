@@ -3,7 +3,6 @@ import { io } from "socket.io-client";
 import { AuthContext } from "../context/AuthContext";
 
 const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
-//const API_URL = "http://localhost:3010";
 
 interface User {
   id: string;
@@ -14,7 +13,7 @@ interface User {
 const socket = io(API_URL, {
   withCredentials: true,
   transports: ["websocket"],
-  autoConnect: false, // 🔥 Empêche les connexions multiples au chargement
+  autoConnect: false, 
 });
 
 const ChatContent: React.FC = () => {
@@ -27,11 +26,11 @@ const ChatContent: React.FC = () => {
   const [onlineFriends, setOnlineFriends] = useState<User[]>([]);
 
   useEffect(() => {
-    if (!user || socket.connected) return; // 🔥 Empêche les multiples connexions
+    if (!user || socket.connected) return; 
 
     console.log("🟡 Connexion WebSocket avec user :", user);
 
-    socket.connect(); // 🔥 Se connecter uniquement si ce n'est pas déjà fait
+    socket.connect(); 
 
     socket.on("connect", () => {
       console.log("✅ Connecté au WebSocket avec ID :", socket.id);
@@ -89,16 +88,16 @@ const ChatContent: React.FC = () => {
   const sendMessage = () => {
     if (message.trim() !== "" && user) {
       socket.emit("message", { sender: user.id, text: message });
-      setMessages(prev => [...prev, `Moi: ${message}`]);
+      setMessages(prev => [...prev, `Me: ${message}`]);
       setMessage("");
     }
   };
 
   return (
     <div className="card p-4 shadow-lg" style={{ borderColor: "#e6a4b4" }}>
-      <h2 className="text-center" style={{ color: "#e6a4b4" }}>Espace Chat</h2>
+      <h2 className="text-center" style={{ color: "#e6a4b4" }}>Chat</h2>
 
-      <p className="text-muted text-center">Amis en ligne :</p>
+      <p className="text-muted text-center">Online friends:</p>
       {onlineFriends.length > 0 ? (
         <ul className="list-group mb-3">
           {onlineFriends.map(friend => (
@@ -110,13 +109,13 @@ const ChatContent: React.FC = () => {
                 style={{ backgroundColor: "#e6a4b4", color: "white" }}
                 onClick={() => alert(`Conversation lancée avec ${friend.username}`)}
               >
-                Démarrer conversation
+                Start the chat
               </button>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="text-center text-muted">Aucun ami en ligne.</p>
+        <p className="text-center text-muted">No friends online.</p>
       )}
 
       <div className="border p-3 chat-box" style={{ maxHeight: "300px", overflowY: "auto", backgroundColor: "#fce4ec" }}>
@@ -131,12 +130,12 @@ const ChatContent: React.FC = () => {
         <input
           type="text"
           className="form-control"
-          placeholder="Écris un message..."
+          placeholder="Tap a message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
         <button className="btn" style={{ backgroundColor: "#e6a4b4", color: "white" }} onClick={sendMessage}>
-          Envoyer
+          Send
         </button>
       </div>
     </div>

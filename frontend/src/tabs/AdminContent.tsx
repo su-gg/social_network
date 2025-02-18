@@ -9,7 +9,6 @@ const AdminContent: React.FC = () => {
   const [gender, setGender] = useState<string>("Homme");
   const [displayNameType, setDisplayNameType] = useState<"firstName" | "lastName" | "fullName" | "username">("fullName");
   const API_URL = "https://prod-beyondwords-04dd84f0b17e.herokuapp.com";
-  //const API_URL = "http://localhost:3010";
   
   useEffect(() => {
     const fetchUserData = async () => {
@@ -93,29 +92,29 @@ const AdminContent: React.FC = () => {
 
       {/* Champs Nom, Prénom, Username */}
       <div className="mb-3">
-        <label className="form-label fw-bold" style={{ color: "#880e4f" }}>Nom</label>
+        <label className="form-label fw-bold" style={{ color: "#880e4f" }}>Last Name</label>
         <input type="text" className="form-control" value={lastName} onChange={(e) => setLastName(e.target.value)} />
       </div>
 
       <div className="mb-3">
-        <label className="form-label fw-bold" style={{ color: "#880e4f" }}>Prénom</label>
+        <label className="form-label fw-bold" style={{ color: "#880e4f" }}>First Name</label>
         <input type="text" className="form-control" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
       </div>
 
       <div className="mb-3">
-        <label className="form-label fw-bold" style={{ color: "#880e4f" }}>Nom d'utilisateur</label>
+        <label className="form-label fw-bold" style={{ color: "#880e4f" }}>Username</label>
         <input type="text" className="form-control" value={username} onChange={(e) => setUsername(e.target.value)} />
       </div>
 
       {/* Date de naissance */}
       <div className="mb-3">
-        <label className="form-label fw-bold" style={{ color: "#880e4f" }}>Date de naissance</label>
+        <label className="form-label fw-bold" style={{ color: "#880e4f" }}>Date of birth</label>
         <input type="date" className="form-control" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
       </div>
 
       {/* Sélection du sexe */}
       <div className="mb-3">
-        <label className="form-label fw-bold" style={{ color: "#880e4f" }}>Sexe</label>
+        <label className="form-label fw-bold" style={{ color: "#880e4f" }}>Gender</label>
         <select className="form-control" value={gender} onChange={(e) => setGender(e.target.value)}>
           <option>Homme</option>
           <option>Femme</option>
@@ -125,24 +124,24 @@ const AdminContent: React.FC = () => {
 
       {/* Affichage en tant que */}
       <div className="mb-3">
-        <label className="form-label fw-bold" style={{ color: "#880e4f" }}>Afficher en tant que :</label>
+        <label className="form-label fw-bold" style={{ color: "#880e4f" }}>Visible as:</label>
         <select className="form-select" value={displayNameType} onChange={(e) => setDisplayNameType(e.target.value as any)}>
-          <option value="firstName">Prénom ({firstName})</option>
-          <option value="lastName">Nom ({lastName})</option>
-          <option value="fullName">Nom Complet ({firstName} {lastName})</option>
-          <option value="username">Nom d'utilisateur ({username})</option>
+          <option value="firstName">First name  ({firstName})</option>
+          <option value="lastName">Last Name ({lastName})</option>
+          <option value="fullName">Full Name ({firstName} {lastName})</option>
+          <option value="username">Username ({username})</option>
         </select>
       </div>
 
       {/* Aperçu */}
       <div className="mb-4 p-3 border rounded text-center" style={{ backgroundColor: "#fce4ec" }}>
-        <strong>Aperçu : </strong>
+        <strong>Preview : </strong>
         <span style={{ color: "#e6a4b4" }}>{getDisplayName()}</span>
       </div>
 
       {/* Visibilité du profil */}
       <div className="mb-4">
-        <label className="form-label fw-bold" style={{ color: "#880e4f" }}>Visibilité du profil :</label>
+        <label className="form-label fw-bold" style={{ color: "#880e4f" }}>Visibility</label>
         <div className="d-flex">
           <label className="me-3">
             <input type="radio" name="visibility" checked={isProfilePublic} onChange={() => setIsProfilePublic(true)} className="me-1" />
@@ -150,14 +149,14 @@ const AdminContent: React.FC = () => {
           </label>
           <label>
             <input type="radio" name="visibility" checked={!isProfilePublic} onChange={() => setIsProfilePublic(false)} className="me-1" />
-            Privé
+            Private
           </label>
         </div>
       </div>
 
       {/* Bouton Sauvegarder */}
       <button className="btn mt-3" style={{ backgroundColor: "#e6a4b4", color: "white", fontWeight: "bold" }} onClick={handleSave}>
-        Sauvegarder
+        Save
       </button>
     </div>
   );

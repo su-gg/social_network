@@ -163,45 +163,45 @@ const FriendsContent: React.FC = () => {
       {error && <p className="text-danger">{error}</p>}
 
       <div className="mb-4">
-        <h3>Ajouter un ami</h3>
+        <h3>Add a friend</h3>
         <div className="d-flex">
           <input
             type="text"
             className="form-control me-2"
-            placeholder="Nom d'utilisateur de l'ami"
+            placeholder="Look for your friend "
             value={friendUsername}
             onChange={(e) => setFriendUsername(e.target.value)}
           />
-          <button className="btn" style={{ backgroundColor: "#e6a4b4", color: "white" }} onClick={() => handleAddFriend(friendUsername)}>Ajouter</button>
+          <button className="btn" style={{ backgroundColor: "#e6a4b4", color: "white" }} onClick={() => handleAddFriend(friendUsername)}>Add</button>
         </div>
       </div>
 
-      <h3>Demandes d'amis reçues :</h3>
+      <h3>Friends request</h3>
       {friendRequests.length === 0 ? (
-        <p className="text-muted">Aucune demande en attente.</p>
+        <p className="text-muted">No friend request pending</p>
       ) : (
         <ul className="list-group">
           {friendRequests.map((request) => (
             <li className="list-group-item d-flex justify-content-between" key={`request-${request._id}`}>
               <div>{request.sender.firstName} {request.sender.lastName} ({request.sender.username})</div>
               <div>
-                <button className="btn btn-success btn-sm me-2" onClick={() => handleRespondToRequest(request._id, "accept")}>Accepter</button>
-                <button className="btn btn-danger btn-sm" onClick={() => handleRespondToRequest(request._id, "decline")}>Refuser</button>
+                <button className="btn btn-success btn-sm me-2" onClick={() => handleRespondToRequest(request._id, "accept")}>Accept</button>
+                <button className="btn btn-danger btn-sm" onClick={() => handleRespondToRequest(request._id, "decline")}>Refuse</button>
               </div>
             </li>
           ))}
         </ul>
       )}
 
-      <h3>Amis existants :</h3>
+      <h3>Friends :</h3>
       {friends.length === 0 ? (
-        <p className="text-muted">Vous n'avez pas encore d'amis.</p>
+        <p className="text-muted">Send a friend request </p>
       ) : (
         <ul className="list-group">
           {friends.map((friend) => (
             <li className="list-group-item d-flex justify-content-between" key={`friend-${friend._id}`}>
               <div>{friend.statusVisibility === "fullname" ? `${friend.firstName} ${friend.lastName}` : `@${friend.username}`}</div>
-              <button className="btn btn-danger btn-sm" onClick={() => handleRemoveFriend(friend._id)}>Supprimer</button>
+              <button className="btn btn-danger btn-sm" onClick={() => handleRemoveFriend(friend._id)}>Delete</button>
             </li>
           ))}
         </ul>
